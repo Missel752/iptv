@@ -1,0 +1,139 @@
+name: Sync & Deploy
+
+# Rebuilds the dataset, guide and static API, then publishes to GitHub Pages.
+# Health scanning runs in its own workflow so a slow probe pass never blocks
+# a deploy.
+
+on:
+  schedule:
+    # 00:15, 06:15, 12:15 and 18:15 UTC.
+    - cron: '15 0,6,12,18 * * *'
+  workflow_dispatch:
+    inputs:
+      skip_epg:
+        description: 'Skip the EPG rebuild'
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths:
+      - 'config/**'
+      - 'src/**'
+      - 'site/**'
+      - '.github/workflows/sync.yml'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build API
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      channels: ${{ steps.summary.outputs.channels }}
+      streams: ${{ steps.summary.outputs.streams }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Health history is the memory that makes scores meaningful, so it is
+      # restored from the cache and from the state branch.
+      - name: Restore state
+        uses: actions/cache@v4
+        with:
+          path: .data
+          key: nexus-state-${{ github.run_id }}
+          restore-keys: |
+            nexus-state-
+
+      - name: Restore persisted health database
+        continue-on-error: true
+        run: |
+          git fetch origin state:state --depth=1 2>/dev/null || exit 0
+          mkdir -p .data
+          git show state:health.json > .data/health.json 2>/dev/null || true
+          git show state:discovery.json > .data/discovery.json 2>/dev/null || true
+          ls -la .data || true
+
+      - name: Aggregate channels and streams
+        env:
+          NEXUS_BASE_URL: ${{ format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
+          NEXUS_REPOSITORY: ${{ github.server_url }}/${{ github.repository }}
+        run: npm run cli -- aggregate
+
+      - name: Build EPG
+        if: ${{ inputs.skip_epg != true }}
+        continue-on-error: true
+        env:
+          NEXUS_BASE_URL: ${{ format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
+        run: npm run cli -- epg
+
+      - name: Build static API and site
+        env:
+          NEXUS_BASE_URL: ${{ format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
+          NEXUS_REPOSITORY: ${{ github.server_url }}/${{ github.repository }}
+        run: npm run cli -- api --clean
+
+      - name: Summarise
+        id: summary
+        run: |
+          node -e "
+            const m = require('./public/api/v1/index.json');
+            const out = [
+              '## ' + m.name,
+              '',
+              '| Metric | Value |',
+              '| --- | --- |',
+              ...Object.entries(m.counts).map(([k, v]) => '| ' + k + ' | ' + v.toLocaleString() + ' |'),
+            ].join('\n');
+            require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY, out + '\n');
+            const gh = require('fs');
+            gh.appendFileSync(process.env.GITHUB_OUTPUT, 'channels=' + m.counts.channels + '\n');
+            gh.appendFileSync(process.env.GITHUB_OUTPUT, 'streams=' + m.counts.streams + '\n');
+          "
+
+      - name: Persist state branch
+        run: |
+          test -f .data/health.json || exit 0
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -rf /tmp/state && mkdir -p /tmp/state
+          cp .data/health.json /tmp/state/ 2>/dev/null || true
+          cp .data/discovery.json /tmp/state/ 2>/dev/null || true
+          cp .data/health-summary.json /tmp/state/ 2>/dev/null || true
+          cd /tmp/state
+          git init -q -b state
+          git remote add origin "${{ github.server_url }}/${{ github.repository }}.git"
+          git add -A
+          git commit -q -m "state: $(date -u +%FT%TZ)" || exit 0
+          git push -q --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" state
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

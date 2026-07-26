@@ -1,0 +1,58 @@
+{
+  "name": "iptv-nexus",
+  "version": "1.0.0",
+  "description": "Self-updating, health-scored IPTV channel + EPG aggregator with a free static JSON API and web player.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "bin": {
+    "iptv-nexus": "./dist/cli.js"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./core": "./dist/core/index.js"
+  },
+  "files": [
+    "dist",
+    "config",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsx src/cli.ts",
+    "test": "node --test --import tsx tests/*.test.ts",
+    "cli": "tsx src/cli.ts",
+    "aggregate": "tsx src/cli.ts aggregate",
+    "health": "tsx src/cli.ts health",
+    "epg": "tsx src/cli.ts epg",
+    "discover": "tsx src/cli.ts discover",
+    "api": "tsx src/cli.ts api",
+    "all": "tsx src/cli.ts pipeline",
+    "serve": "node scripts/serve.mjs",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\""
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "fast-xml-parser": "^4.5.0",
+    "yaml": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  },
+  "keywords": [
+    "iptv",
+    "m3u",
+    "xmltv",
+    "epg",
+    "playlist",
+    "hls",
+    "streaming",
+    "api"
+  ]
+}

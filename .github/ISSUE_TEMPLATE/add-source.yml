@@ -1,0 +1,44 @@
+name: Add a stream source
+description: Propose a new playlist or stream source for the index
+title: '[source] '
+labels: [source]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Playlist or stream URL
+      placeholder: https://example.com/channels.m3u
+    validations:
+      required: true
+  - type: input
+    id: homepage
+    attributes:
+      label: Homepage or documentation
+      description: Where this source is officially published
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of source is this?
+      options:
+        - Official broadcaster / public service feed
+        - FAST service with a published playlist
+        - Community list with a redistribution licence
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: rights
+    attributes:
+      label: Redistribution rights
+      description: >
+        What makes this source appropriate to index? A licence, terms of use, or
+        the fact that the operator publishes it openly. See docs/LEGAL.md.
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: This is not a paid, credential-protected or leaked service
+          required: true

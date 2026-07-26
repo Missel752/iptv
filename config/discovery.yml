@@ -1,0 +1,24 @@
+# Automatic discovery sources.
+#
+# `mode: index`    — fetch the page and follow every .m3u/.m3u8 link it contains
+# `mode: playlist` — treat the URL itself as a playlist
+#
+# Discovery NEVER writes to the dataset directly. It produces a proposal
+# (.data/proposals/discovered.m3u + .md) that CI turns into a pull request for
+# a human to review. Only add sources you have the right to index.
+
+sources:
+  - id: iptv-org-index
+    name: iptv-org country index
+    url: https://iptv-org.github.io/iptv/index.country.m3u
+    enabled: false
+    mode: playlist
+    trust: 0.8
+
+  # - id: community-index
+  #   name: A community index page listing public playlists
+  #   url: https://example.com/free-iptv-lists
+  #   enabled: false
+  #   mode: index
+  #   max_playlists: 20
+  #   trust: 0.3

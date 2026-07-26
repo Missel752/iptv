@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>IPTV Nexus — free channel & EPG index</title>
+    <meta
+      name="description"
+      content="Search thousands of free-to-air IPTV channels from around the world, with live stream health scores, EPG data and a free static JSON API."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0b0e14" />
+
+    <meta property="og:title" content="IPTV Nexus" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:description"
+      content="Free, self-updating IPTV channel index with health-scored streams, EPG and a static JSON API."
+    />
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%235b8cff'/%3E%3Cpath d='M9 12h14v10H9z' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M12 8l4 4 4-4' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#results">Skip to results</a>
+
+    <header class="topbar">
+      <div class="topbar__inner">
+        <div class="brand">
+          <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="7" fill="currentColor" />
+            <path d="M9 12h14v10H9z" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round" />
+            <path d="M12 8l4 4 4-4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <div>
+            <span class="brand__name">IPTV Nexus</span>
+            <span class="brand__meta" id="brand-meta">loading…</span>
+          </div>
+        </div>
+
+        <div class="search">
+          <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2" />
+            <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <input
+            id="search"
+            type="search"
+            placeholder="Search channels…   (press /)"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Search channels"
+          />
+          <kbd class="search__kbd">/</kbd>
+        </div>
+
+        <div class="topbar__actions">
+          <button id="filters-toggle" class="btn btn--ghost" aria-expanded="false" aria-controls="filters">
+            Filters <span class="badge" id="filter-count" hidden>0</span>
+          </button>
+          <a class="btn btn--ghost" href="api/v1/openapi.json" target="_blank" rel="noopener">API</a>
+          <button id="theme-toggle" class="btn btn--icon" title="Toggle theme" aria-label="Toggle theme">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="filters" id="filters" aria-label="Filters">
+        <div class="filters__group">
+          <label class="switch">
+            <input type="checkbox" id="filter-online" />
+            <span></span>
+            Working streams only
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="filter-hd" />
+            <span></span>
+            HD and above
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="filter-favorites" />
+            <span></span>
+            Favourites
+          </label>
+        </div>
+
+        <div class="filters__group">
+          <label class="field">
+            <span class="field__label">Country</span>
+            <select id="filter-country"><option value="">All countries</option></select>
+          </label>
+          <label class="field">
+            <span class="field__label">Category</span>
+            <select id="filter-category"><option value="">All categories</option></select>
+          </label>
+          <label class="field">
+            <span class="field__label">Language</span>
+            <select id="filter-language"><option value="">All languages</option></select>
+          </label>
+          <label class="field">
+            <span class="field__label">Sort by</span>
+            <select id="sort">
+              <option value="relevance">Relevance</option>
+              <option value="score">Health score</option>
+              <option value="name">Name (A–Z)</option>
+              <option value="quality">Quality</option>
+            </select>
+          </label>
+        </div>
+
+        <button id="filters-reset" class="btn btn--ghost btn--block">Reset filters</button>
+
+        <div class="filters__stats" id="stats"></div>
+      </aside>
+
+      <section class="content">
+        <div class="content__head">
+          <p id="result-count" class="muted" role="status" aria-live="polite">Loading channels…</p>
+          <div class="chips" id="active-chips"></div>
+        </div>
+
+        <div id="results" class="grid" tabindex="-1"></div>
+
+        <div id="sentinel" class="sentinel" aria-hidden="true"></div>
+        <p id="empty" class="empty" hidden>
+          No channels match those filters.<br /><button class="btn btn--ghost" id="empty-reset">Clear filters</button>
+        </p>
+      </section>
+    </main>
+
+    <!-- Player panel -->
+    <div class="player" id="player" hidden aria-modal="true" role="dialog" aria-labelledby="player-title">
+      <div class="player__backdrop" data-close></div>
+      <div class="player__panel">
+        <header class="player__head">
+          <img id="player-logo" class="player__logo" alt="" />
+          <div class="player__titles">
+            <h2 id="player-title">Channel</h2>
+            <p id="player-sub" class="muted"></p>
+          </div>
+          <button class="btn btn--icon" id="player-fav" title="Add to favourites" aria-label="Add to favourites">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="m12 20-7-6.5a4.2 4.2 0 1 1 7-4.6 4.2 4.2 0 1 1 7 4.6Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <button class="btn btn--icon" data-close title="Close" aria-label="Close player">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+        </header>
+
+        <div class="player__video">
+          <video id="video" controls playsinline preload="none"></video>
+          <div class="player__overlay" id="player-status" hidden></div>
+        </div>
+
+        <div class="player__body">
+          <div class="player__streams" id="player-streams"></div>
+          <div class="player__epg" id="player-epg"></div>
+          <details class="player__meta">
+            <summary>Technical details</summary>
+            <dl id="player-meta"></dl>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>
+        <strong>IPTV Nexus</strong> aggregates publicly listed streams. It hosts no video, and
+        provides no access to paid services. Report a problem via the repository's issue tracker.
+      </p>
+      <p class="muted" id="footer-meta"></p>
+    </footer>
+
+    <!-- hls.js powers HLS playback outside Safari. Playback degrades to native
+         HLS if the CDN is unreachable; nothing else on the page depends on it. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js" referrerpolicy="no-referrer"></script>
+    <script src="app.js" type="module"></script>
+  </body>
+</html>

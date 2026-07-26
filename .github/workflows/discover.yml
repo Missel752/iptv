@@ -1,0 +1,83 @@
+name: Discover Sources
+
+# Scans configured index pages for new streams, validates each candidate with a
+# live probe, and opens a pull request with the proposal. Nothing is merged
+# automatically — a human reviews the diff.
+
+on:
+  schedule:
+    # Mondays at 04:00 UTC.
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+    inputs:
+      max_probes:
+        description: 'Maximum candidates to validate'
+        type: string
+        default: '600'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: discover
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Restore rejection memory
+        continue-on-error: true
+        run: |
+          mkdir -p .data
+          git fetch origin state:state --depth=1 2>/dev/null || exit 0
+          git show state:discovery.json > .data/discovery.json 2>/dev/null || true
+
+      - name: Aggregate
+        run: npm run cli -- aggregate
+
+      - name: Discover
+        run: npm run cli -- discover --max-probes ${{ inputs.max_probes || '600' }}
+
+      - name: Check for proposals
+        id: check
+        run: |
+          if [ ! -s .data/proposals/discovered.m3u ]; then
+            echo "found=0" >> "$GITHUB_OUTPUT"
+            echo "No new streams discovered." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          COUNT=$(node -e "console.log(require('./.data/discovery-report.json').accepted.length)")
+          echo "found=$COUNT" >> "$GITHUB_OUTPUT"
+          cat .data/proposals/discovered.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Stage proposal
+        if: steps.check.outputs.found != '0'
+        run: |
+          mkdir -p proposals
+          cp .data/proposals/discovered.m3u proposals/discovered.m3u
+          cp .data/proposals/discovered.md proposals/discovered.md
+
+      - name: Open pull request
+        if: steps.check.outputs.found != '0'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: discovery/auto
+          delete-branch: true
+          commit-message: 'discovery: ${{ steps.check.outputs.found }} new stream candidate(s)'
+          title: 'Discovery: ${{ steps.check.outputs.found }} new stream candidate(s)'
+          body-path: .data/proposals/discovered.md
+          labels: discovery, automated
+          add-paths: |
+            proposals/**

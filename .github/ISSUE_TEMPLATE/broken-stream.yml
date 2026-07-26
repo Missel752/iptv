@@ -1,0 +1,33 @@
+name: Report a broken or misattributed stream
+description: A stream is dead, wrong, or attached to the wrong channel
+title: '[stream] '
+labels: [stream]
+body:
+  - type: input
+    id: channel
+    attributes:
+      label: Channel ID
+      placeholder: BBCNews.uk
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Stream URL
+  - type: dropdown
+    id: problem
+    attributes:
+      label: Problem
+      options:
+        - Stream is dead but still listed
+        - Stream works but is scored as broken
+        - Stream is attached to the wrong channel
+        - Wrong quality / metadata
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Your country helps — many "broken" streams are geo-restricted.

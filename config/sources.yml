@@ -1,0 +1,56 @@
+# Stream sources.
+#
+# `iptv-org` is always loaded as the baseline dataset (channels, feeds, logos,
+# guides, blocklist) — the entry below only sets its trust weight.
+#
+# To add your own list, append an entry with a unique `id` and a public M3U URL.
+# `trust` (0-1) biases ranking when the same channel appears in several lists.
+#
+# Only add sources you have the right to redistribute. See docs/LEGAL.md.
+
+sources:
+  - id: iptv-org
+    name: iptv-org community database
+    type: iptv-org
+    url: https://iptv-org.github.io/api
+    enabled: true
+    trust: 0.9
+    license: The Unlicense
+    homepage: https://github.com/iptv-org/iptv
+
+  # --- Public broadcaster / free-to-air streams -----------------------------
+  # These are official, publicly documented FAST feeds. Uncomment what you want.
+
+  # - id: samsung-tvplus
+  #   name: Samsung TV Plus (community mirror)
+  #   type: m3u
+  #   url: https://i.mjh.nz/SamsungTVPlus/all.m3u8
+  #   enabled: false
+  #   trust: 0.7
+  #   categories: [general]
+  #   homepage: https://i.mjh.nz/SamsungTVPlus/
+
+  # - id: plutotv
+  #   name: Pluto TV (community mirror)
+  #   type: m3u
+  #   url: https://i.mjh.nz/PlutoTV/all.m3u8
+  #   enabled: false
+  #   trust: 0.7
+  #   categories: [general]
+
+  # - id: plex
+  #   name: Plex free channels (community mirror)
+  #   type: m3u
+  #   url: https://i.mjh.nz/Plex/all.m3u8
+  #   enabled: false
+  #   trust: 0.6
+
+  # --- Example of a filtered, country-pinned source -------------------------
+  # - id: my-local-list
+  #   name: My curated local channels
+  #   type: m3u
+  #   url: https://example.com/my-channels.m3u
+  #   enabled: false
+  #   trust: 0.8
+  #   country: TR
+  #   exclude: "(?i)adult|xxx"

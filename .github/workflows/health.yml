@@ -1,0 +1,130 @@
+name: Health Scan
+
+# Probes streams in parallel shards, merges the results back into a single
+# health database and pushes it to the `state` branch. The next Sync run picks
+# it up and folds the scores into the API.
+
+on:
+  schedule:
+    # 03:00 and 15:00 UTC.
+    - cron: '0 3,15 * * *'
+  workflow_dispatch:
+    inputs:
+      shards:
+        description: 'Number of parallel shards'
+        type: string
+        default: '6'
+      limit:
+        description: 'Max streams per shard (0 = no limit)'
+        type: string
+        default: '0'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: health
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    name: Probe shard ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # ffmpeg ships with the ubuntu-latest image, but pin the check so a
+      # future image change fails loudly instead of silently degrading.
+      - name: Verify ffprobe
+        run: ffprobe -version | head -1
+
+      - name: Restore health database
+        continue-on-error: true
+        run: |
+          mkdir -p .data
+          git fetch origin state:state --depth=1 2>/dev/null || exit 0
+          git show state:health.json > .data/health.json 2>/dev/null || true
+
+      - name: Aggregate (needed for the stream list)
+        run: npm run cli -- aggregate
+
+      - name: Probe streams
+        run: |
+          LIMIT="${{ inputs.limit || '0' }}"
+          ARGS="--shard-count 6 --shard-index ${{ matrix.shard }} --min-age 300"
+          if [ "$LIMIT" != "0" ]; then ARGS="$ARGS --limit $LIMIT"; fi
+          npm run cli -- health $ARGS
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: health-shard-${{ matrix.shard }}
+          path: .data/health.json
+          retention-days: 1
+
+  merge:
+    name: Merge shards
+    needs: scan
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: shards
+          pattern: health-shard-*
+
+      - name: Merge health databases
+        run: node scripts/merge-health.mjs shards .data/health.json
+
+      - name: Push to state branch
+        run: |
+          test -f .data/health.json || exit 1
+          rm -rf /tmp/state && mkdir -p /tmp/state
+          cp .data/health.json /tmp/state/
+          cd /tmp/state
+          git init -q -b state
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "health: $(date -u +%FT%TZ)"
+          git push -q --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" state
+
+      - name: Report
+        run: |
+          node -e "
+            const records = require('./.data/health.json');
+            const by = (s) => records.filter(r => r.status === s).length;
+            const rows = ['online','offline','timeout','blocked','error','unknown']
+              .map(s => '| ' + s + ' | ' + by(s).toLocaleString() + ' |');
+            const avg = (records.reduce((a, r) => a + r.score, 0) / (records.length || 1)).toFixed(1);
+            require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY, [
+              '## Health scan',
+              '',
+              'Total streams tracked: **' + records.length.toLocaleString() + '**  ',
+              'Average score: **' + avg + '/100**',
+              '',
+              '| Status | Count |',
+              '| --- | --- |',
+              ...rows,
+            ].join('\n') + '\n');
+          "

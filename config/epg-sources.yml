@@ -1,0 +1,47 @@
+# EPG (XMLTV) sources.
+#
+# Each entry is a URL to an XMLTV document (plain or gzipped). Guides are
+# downloaded, normalised to UTC, matched to Nexus channel ids and merged into
+# a single guide plus per-country shards.
+#
+# `countries` narrows fuzzy channel matching, which is the single most
+# effective way to avoid wrong links — always fill it in when you can.
+# `trust` breaks ties when two guides describe the same programme slot.
+#
+# The entries below are disabled by default so a fresh clone does not hammer
+# third-party servers. Enable the ones you actually want, and check each
+# source's terms before redistributing its data.
+
+sources:
+  - id: iptv-org-epg
+    name: iptv-org EPG (generate with the iptv-org/epg grabber)
+    # Point this at your own generated guide, e.g. a GitHub Pages artifact.
+    url: https://example.com/guide.xml.gz
+    enabled: false
+    lang: en
+    countries: []
+    trust: 0.8
+
+  # - id: epg-uk
+  #   name: United Kingdom
+  #   url: https://example.com/epg/uk.xml.gz
+  #   enabled: false
+  #   lang: en
+  #   countries: [GB]
+  #   trust: 0.7
+
+  # - id: epg-tr
+  #   name: Türkiye
+  #   url: https://example.com/epg/tr.xml.gz
+  #   enabled: false
+  #   lang: tr
+  #   countries: [TR]
+  #   trust: 0.7
+
+  # - id: epg-de
+  #   name: Deutschland
+  #   url: https://example.com/epg/de.xml.gz
+  #   enabled: false
+  #   lang: de
+  #   countries: [DE, AT, CH]
+  #   trust: 0.7
