@@ -99,8 +99,15 @@ jobs:
             echo "ok=0" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          PROGRAMMES=$(grep -c '<programme' guide.xml || echo 0)
-          CHANNELS=$(grep -c '<channel ' guide.xml || echo 0)
+          # `grep -c` already prints 0 when nothing matches, and exits 1 while
+          # doing it. Piping that through `|| echo 0` appended a second zero,
+          # producing the two-line value "0\n0" — which made the numeric test
+          # below error out instead of returning false, so an empty guide was
+          # uploaded as if it were fine. Swallow the exit code, keep the count.
+          PROGRAMMES=$(grep -c '<programme' guide.xml || true)
+          CHANNELS=$(grep -c '<channel ' guide.xml || true)
+          PROGRAMMES=${PROGRAMMES:-0}
+          CHANNELS=${CHANNELS:-0}
           echo "${{ matrix.site }}: $CHANNELS channels, $PROGRAMMES programmes"
           echo "- **${{ matrix.site }}** — $CHANNELS channels, $PROGRAMMES programmes" >> "$GITHUB_STEP_SUMMARY"
           if [ "$PROGRAMMES" -lt 1 ]; then
