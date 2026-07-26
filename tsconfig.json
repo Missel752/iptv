@@ -16,6 +16,7 @@
     "exactOptionalPropertyTypes": false,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
+    "types": ["node"],
     "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": false
