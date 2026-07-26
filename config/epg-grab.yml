@@ -1,0 +1,104 @@
+# EPG sites to grab with the iptv-org/epg grabber.
+#
+# The `EPG Grab` workflow clones https://github.com/iptv-org/epg, runs its
+# scraper for each site below in its own parallel job, and publishes the
+# resulting XMLTV to this repository's `state` branch. `config/epg-sources.yml`
+# then reads those files back in during the normal sync.
+#
+# Grabbing ourselves — rather than pointing at somebody else's EPG dump — is
+# deliberate: third-party aggregator dumps are exactly the kind of source
+# docs/LEGAL.md warns about, and a first-party scrape of a broadcaster's own
+# public listings is defensible.
+#
+# Choosing sites:
+#   `mapped` below is how many of a site's channels already carry an
+#   `xmltv_id` in the upstream database, i.e. how many link to a Nexus channel
+#   with no guessing at all. Our matcher fuzzy-matches the rest, but a site
+#   with a high mapped ratio is worth far more per minute of grabbing.
+#
+# Sites deliberately NOT enabled:
+#   ontvtonight.com  17478 channels,  2% mapped — huge grab, almost no yield
+#   tv24.co.uk        1072 channels,  4% mapped — same problem, smaller
+#   epgshare01.online / epg.iptvx.one / sat.tv — third-party EPG dumps rather
+#     than first-party listings; excluded on the same grounds as stream sources
+#
+# Full catalogue: https://github.com/iptv-org/epg/blob/master/SITES.md
+
+sites:
+  # --- United States -------------------------------------------------------
+  - site: tvtv.us
+    lang: en
+    countries: [US, CA]
+    # 2299 channels, 97% already mapped — the single best source available.
+    enabled: true
+    timeout: 30000
+    max_connections: 10
+
+  # --- Free ad-supported streaming (matches most of our stream sources) ----
+  - site: pluto.tv
+    lang: en
+    countries: [US, GB, DE, ES, FR, IT, BR, MX, CA, AU]
+    # 2696 channels, 30% mapped. A large share of our streams are Pluto feeds.
+    enabled: true
+    timeout: 30000
+    max_connections: 10
+
+  - site: plex.tv
+    lang: en
+    countries: [US, GB, CA, AU]
+    # 1315 channels, 42% mapped.
+    enabled: true
+    timeout: 30000
+    max_connections: 10
+
+  - site: i.mjh.nz
+    lang: en
+    countries: [US, GB, AU, NZ, CA]
+    # 10932 channels, 30% mapped — biggest absolute yield, but the slowest
+    # grab in the set. Disable this one first if the workflow starts timing out.
+    enabled: true
+    timeout: 45000
+    max_connections: 8
+
+  # --- Türkiye -------------------------------------------------------------
+  - site: tvplus.com.tr
+    lang: tr
+    countries: [TR]
+    # 150 channels, 96% mapped.
+    enabled: true
+    timeout: 30000
+    max_connections: 5
+
+  - site: digiturk.com.tr
+    lang: tr
+    countries: [TR]
+    # 112 channels, 81% mapped.
+    enabled: true
+    timeout: 30000
+    max_connections: 5
+
+  - site: turksatkablo.com.tr
+    lang: tr
+    countries: [TR]
+    # 177 channels, 67% mapped.
+    enabled: true
+    timeout: 30000
+    max_connections: 5
+
+  # --- Latin America / Spain ----------------------------------------------
+  - site: mi.tv
+    lang: es
+    countries: [MX, AR, CL, CO, PE, VE, ES]
+    # 2084 channels, 29% mapped.
+    enabled: true
+    timeout: 30000
+    max_connections: 8
+
+  # --- Poland --------------------------------------------------------------
+  - site: programtv.onet.pl
+    lang: pl
+    countries: [PL]
+    # 590 channels, 60% mapped.
+    enabled: true
+    timeout: 30000
+    max_connections: 5

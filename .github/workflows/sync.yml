@@ -23,11 +23,16 @@ on:
       - '.github/workflows/sync.yml'
 
 permissions:
-  contents: write
+  # Read-only on contents: Sync consumes the state branch but never writes it.
+  # Health Scan and EPG Grab own their own files there.
+  contents: read
   pages: write
   id-token: write
 
 concurrency:
+  # Keyed by ref, not a bare literal: a fixed group is shared by pushes,
+  # schedules, dispatches *and* re-runs of an older run, which can leave a
+  # re-run queued forever behind a group it can never acquire.
   group: sync-${{ github.ref }}
   cancel-in-progress: false
 
@@ -106,22 +111,6 @@ jobs:
             gh.appendFileSync(process.env.GITHUB_OUTPUT, 'channels=' + m.counts.channels + '\n');
             gh.appendFileSync(process.env.GITHUB_OUTPUT, 'streams=' + m.counts.streams + '\n');
           "
-
-      - name: Persist state branch
-        run: |
-          test -f .data/health.json || exit 0
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm -rf /tmp/state && mkdir -p /tmp/state
-          cp .data/health.json /tmp/state/ 2>/dev/null || true
-          cp .data/discovery.json /tmp/state/ 2>/dev/null || true
-          cp .data/health-summary.json /tmp/state/ 2>/dev/null || true
-          cd /tmp/state
-          git init -q -b state
-          git remote add origin "${{ github.server_url }}/${{ github.repository }}.git"
-          git add -A
-          git commit -q -m "state: $(date -u +%FT%TZ)" || exit 0
-          git push -q --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" state
 
       - uses: actions/upload-pages-artifact@v3
         with:

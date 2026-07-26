@@ -56,11 +56,22 @@ conclusive observation; until then the API reports `0` and the UI says
 
 ### Merged EPG
 
-Guides are downloaded from every source you configure, normalised to UTC, and
-matched to channel ids — first via upstream's authoritative guide mappings, then
-by exact id, then by fuzzy name matching narrowed to the guide's countries. The
-output is a single XMLTV file keyed by *Nexus channel id*, plus per-country
-shards, so any player can use one guide URL for everything.
+The guide is grabbed, not borrowed. A nightly workflow runs the
+[iptv-org/epg](https://github.com/iptv-org/epg) scraper against the sites listed
+in `config/epg-grab.yml` — one parallel job per site, so a single broken scraper
+cannot take the guide down — and publishes the XMLTV to this repository's own
+`state` branch. Pointing at a third party's EPG dump would be less code and a
+worse idea; those dumps are exactly what `docs/LEGAL.md` warns about, and they
+go offline without notice.
+
+The sync then downloads those guides, normalises everything to UTC, and matches
+each guide channel to a channel id — first via upstream's authoritative
+mappings, then by exact id, then by fuzzy name matching narrowed to the guide's
+countries. Anything below the confidence threshold is reported as unmatched
+rather than guessed at.
+
+The output is a single XMLTV file keyed by *Nexus channel id*, plus per-country
+shards, so one guide URL works with every generated playlist.
 
 ---
 
@@ -159,7 +170,8 @@ write down what you want to change.
 | --- | --- |
 | `settings.yml` | Global behaviour: scoring, thresholds, output shape |
 | `sources.yml` | Extra stream sources beyond upstream |
-| `epg-sources.yml` | XMLTV guide sources |
+| `epg-grab.yml` | Which sites the nightly EPG scraper visits |
+| `epg-sources.yml` | Which grabbed guides the sync consumes, and their countries |
 | `discovery.yml` | Where automatic discovery looks for new streams |
 
 Adding a source:
@@ -224,13 +236,18 @@ Full machine-readable schema: **`/api/v1/openapi.json`**. Human summary:
 | --- | --- | --- |
 | `sync.yml` | every 6 h | Aggregate → EPG → API → deploy to Pages |
 | `health.yml` | 2×/day | Probe streams in 6 parallel shards, merge, persist |
+| `epg.yml` | nightly | Grab each configured EPG site, publish XMLTV |
 | `discover.yml` | weekly | Find new streams, validate, open a PR |
 | `ci.yml` | on push/PR | Typecheck, unit tests, pipeline smoke test |
 
-Health history is the memory that makes scoring work, so it is persisted to an
-orphan `state` branch between runs. Nothing else is committed by automation —
-discovery results arrive as a **pull request** you review, never as a silent
-push.
+Health history and grabbed guides both live on an orphan `state` branch between
+runs — health history is the memory that makes scoring mean anything, and
+re-grabbing every guide on every sync would be gratuitous. Health Scan and EPG
+Grab each own their own paths there and merge rather than force-push, so
+neither can wipe the other's data. Sync only reads it.
+
+Nothing else is committed by automation — discovery results arrive as a **pull
+request** you review, never as a silent push.
 
 ---
 

@@ -1,47 +1,95 @@
-# EPG (XMLTV) sources.
+# EPG (XMLTV) sources consumed during a sync.
 #
-# Each entry is a URL to an XMLTV document (plain or gzipped). Guides are
-# downloaded, normalised to UTC, matched to Nexus channel ids and merged into
-# a single guide plus per-country shards.
+# These point at the guides this repository grabs for itself: the `EPG Grab`
+# workflow runs the iptv-org/epg scraper for every site in `config/epg-grab.yml`
+# and publishes the XMLTV to this repository's `state` branch. Nothing here
+# depends on a third party's EPG dump staying online.
 #
-# `countries` narrows fuzzy channel matching, which is the single most
-# effective way to avoid wrong links — always fill it in when you can.
-# `trust` breaks ties when two guides describe the same programme slot.
+# Each guide is downloaded, normalised to UTC, and matched to Nexus channel
+# ids — first via upstream's authoritative `guides.json` mapping, then by exact
+# id, then by fuzzy name matching narrowed to `countries` below. Filling in
+# `countries` accurately is the single most effective way to avoid wrong links.
 #
-# The entries below are disabled by default so a fresh clone does not hammer
-# third-party servers. Enable the ones you actually want, and check each
-# source's terms before redistributing its data.
+# To add a source, add the site to `config/epg-grab.yml` and mirror it here
+# with a matching id. To use somebody else's guide instead, replace `url` with
+# theirs — but read docs/LEGAL.md first.
 
 sources:
-  - id: iptv-org-epg
-    name: iptv-org EPG (generate with the iptv-org/epg grabber)
-    # Point this at your own generated guide, e.g. a GitHub Pages artifact.
-    url: https://example.com/guide.xml.gz
-    enabled: false
+  # --- United States -------------------------------------------------------
+  - id: tvtv-us
+    name: tvtv.us (US / Canada listings)
+    url: https://raw.githubusercontent.com/dearbulut/iptv/state/epg/tvtv-us.xml.gz
+    enabled: true
     lang: en
-    countries: []
+    countries: [US, CA]
+    # 97% of this site's channels are already mapped upstream — highest trust
+    # in the set, so it wins ties against any other guide.
+    trust: 0.95
+
+  # --- Free ad-supported streaming ----------------------------------------
+  - id: pluto-tv
+    name: Pluto TV
+    url: https://raw.githubusercontent.com/dearbulut/iptv/state/epg/pluto-tv.xml.gz
+    enabled: true
+    lang: en
+    countries: [US, GB, DE, ES, FR, IT, BR, MX, CA, AU]
+    trust: 0.85
+
+  - id: plex-tv
+    name: Plex live channels
+    url: https://raw.githubusercontent.com/dearbulut/iptv/state/epg/plex-tv.xml.gz
+    enabled: true
+    lang: en
+    countries: [US, GB, CA, AU]
     trust: 0.8
 
-  # - id: epg-uk
-  #   name: United Kingdom
-  #   url: https://example.com/epg/uk.xml.gz
-  #   enabled: false
-  #   lang: en
-  #   countries: [GB]
-  #   trust: 0.7
+  - id: i-mjh-nz
+    name: Samsung TV Plus / Plex / Pluto aggregate
+    url: https://raw.githubusercontent.com/dearbulut/iptv/state/epg/i-mjh-nz.xml.gz
+    enabled: true
+    lang: en
+    countries: [US, GB, AU, NZ, CA]
+    trust: 0.75
 
-  # - id: epg-tr
-  #   name: Türkiye
-  #   url: https://example.com/epg/tr.xml.gz
-  #   enabled: false
-  #   lang: tr
-  #   countries: [TR]
-  #   trust: 0.7
+  # --- Türkiye -------------------------------------------------------------
+  - id: tvplus-com-tr
+    name: TV+ (Türkiye)
+    url: https://raw.githubusercontent.com/dearbulut/iptv/state/epg/tvplus-com-tr.xml.gz
+    enabled: true
+    lang: tr
+    countries: [TR]
+    trust: 0.9
 
-  # - id: epg-de
-  #   name: Deutschland
-  #   url: https://example.com/epg/de.xml.gz
-  #   enabled: false
-  #   lang: de
-  #   countries: [DE, AT, CH]
-  #   trust: 0.7
+  - id: digiturk-com-tr
+    name: Digiturk
+    url: https://raw.githubusercontent.com/dearbulut/iptv/state/epg/digiturk-com-tr.xml.gz
+    enabled: true
+    lang: tr
+    countries: [TR]
+    trust: 0.85
+
+  - id: turksatkablo-com-tr
+    name: Türksat Kablo
+    url: https://raw.githubusercontent.com/dearbulut/iptv/state/epg/turksatkablo-com-tr.xml.gz
+    enabled: true
+    lang: tr
+    countries: [TR]
+    trust: 0.8
+
+  # --- Latin America / Spain ----------------------------------------------
+  - id: mi-tv
+    name: mi.tv (Spanish-language listings)
+    url: https://raw.githubusercontent.com/dearbulut/iptv/state/epg/mi-tv.xml.gz
+    enabled: true
+    lang: es
+    countries: [MX, AR, CL, CO, PE, VE, ES]
+    trust: 0.75
+
+  # --- Poland --------------------------------------------------------------
+  - id: programtv-onet-pl
+    name: Onet Program TV
+    url: https://raw.githubusercontent.com/dearbulut/iptv/state/epg/programtv-onet-pl.xml.gz
+    enabled: true
+    lang: pl
+    countries: [PL]
+    trust: 0.8

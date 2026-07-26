@@ -1,0 +1,155 @@
+name: EPG Grab
+
+# Runs the iptv-org/epg scraper for each site listed in `config/epg-grab.yml`
+# and publishes the resulting XMLTV to the `state` branch. The Sync workflow
+# then reads those files back through `config/epg-sources.yml`, matches every
+# guide channel to a Nexus channel id, and publishes one merged guide.
+#
+# Each site gets its own job so a single slow or broken scraper cannot take
+# the whole guide down with it.
+
+on:
+  schedule:
+    # 01:00 UTC — finishes well before the 06:15 sync picks the results up.
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+    inputs:
+      sites:
+        description: 'Comma-separated sites to grab (blank = all enabled)'
+        type: string
+        default: ''
+      days:
+        description: 'Days of guide to fetch'
+        type: string
+        default: '3'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: epg-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    name: Plan sites
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.sites.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: sites
+        run: |
+          if [ -n "${{ inputs.sites }}" ]; then
+            MATRIX=$(node -e "
+              const list = '${{ inputs.sites }}'.split(',').map(s => s.trim()).filter(Boolean);
+              console.log(JSON.stringify(list.map(site => ({
+                site,
+                slug: site.replace(/[^a-z0-9]+/gi, '-'),
+                lang: 'en', timeout: 30000, maxConnections: 8,
+              }))));
+            ")
+          else
+            MATRIX=$(node scripts/epg-sites.mjs matrix)
+          fi
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+          echo "Planned $(echo "$MATRIX" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).length))') site(s)"
+
+  grab:
+    name: Grab ${{ matrix.site }}
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - name: Clone the iptv-org grabber
+        run: git clone --depth 1 -b master https://github.com/iptv-org/epg.git epg
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install grabber dependencies
+        working-directory: epg
+        run: npm install --no-audit --no-fund
+
+      - name: Grab ${{ matrix.site }}
+        working-directory: epg
+        continue-on-error: true
+        run: |
+          npm run grab --- \
+            --sites=${{ matrix.site }} \
+            --output=guide.xml \
+            --days=${{ inputs.days || '3' }} \
+            --timeout=${{ matrix.timeout }} \
+            --maxConnections=${{ matrix.maxConnections }} \
+            --gzip
+
+      - name: Verify output
+        id: verify
+        working-directory: epg
+        run: |
+          if [ ! -s guide.xml ]; then
+            echo "No guide produced for ${{ matrix.site }}"
+            echo "ok=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          PROGRAMMES=$(grep -c '<programme' guide.xml || echo 0)
+          CHANNELS=$(grep -c '<channel ' guide.xml || echo 0)
+          echo "${{ matrix.site }}: $CHANNELS channels, $PROGRAMMES programmes"
+          echo "- **${{ matrix.site }}** — $CHANNELS channels, $PROGRAMMES programmes" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$PROGRAMMES" -lt 1 ]; then
+            echo "ok=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=1" >> "$GITHUB_OUTPUT"
+            mkdir -p out
+            cp guide.xml.gz "out/${{ matrix.slug }}.xml.gz" 2>/dev/null || gzip -9 -c guide.xml > "out/${{ matrix.slug }}.xml.gz"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: steps.verify.outputs.ok == '1'
+        with:
+          name: epg-${{ matrix.slug }}
+          path: epg/out/*.xml.gz
+          retention-days: 1
+
+  publish:
+    name: Publish to state branch
+    needs: grab
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: downloaded
+          pattern: epg-*
+        continue-on-error: true
+
+      - name: Collect guides
+        id: collect
+        run: |
+          mkdir -p guides
+          find downloaded -name '*.xml.gz' -exec cp {} guides/ \; 2>/dev/null || true
+          COUNT=$(ls guides/*.xml.gz 2>/dev/null | wc -l | tr -d ' ')
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "Collected $COUNT guide file(s)"
+          ls -la guides/ 2>/dev/null || true
+          if [ "$COUNT" = "0" ]; then
+            echo '⚠️ No guides were produced — every site failed.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Publish
+        if: steps.collect.outputs.count != '0'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          chmod +x scripts/publish-state.sh
+          ./scripts/publish-state.sh "epg: $(date -u +%FT%TZ) (${{ steps.collect.outputs.count }} sites)" guides/:epg/

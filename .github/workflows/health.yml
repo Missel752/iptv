@@ -10,10 +10,6 @@ on:
     - cron: '0 3,15 * * *'
   workflow_dispatch:
     inputs:
-      shards:
-        description: 'Number of parallel shards'
-        type: string
-        default: '6'
       limit:
         description: 'Max streams per shard (0 = no limit)'
         type: string
@@ -33,6 +29,8 @@ jobs:
     timeout-minutes: 75
     strategy:
       fail-fast: false
+      # Fixed at six shards: a dynamic count would need a separate planning
+      # job, and --shard-count below must match this list exactly.
       matrix:
         shard: [0, 1, 2, 3, 4, 5]
     steps:
@@ -97,17 +95,13 @@ jobs:
         run: node scripts/merge-health.mjs shards .data/health.json
 
       - name: Push to state branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           test -f .data/health.json || exit 1
-          rm -rf /tmp/state && mkdir -p /tmp/state
-          cp .data/health.json /tmp/state/
-          cd /tmp/state
-          git init -q -b state
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -q -m "health: $(date -u +%FT%TZ)"
-          git push -q --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" state
+          chmod +x scripts/publish-state.sh
+          ./scripts/publish-state.sh "health: $(date -u +%FT%TZ)" .data/health.json:health.json
 
       - name: Report
         run: |

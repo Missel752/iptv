@@ -4,10 +4,23 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    # Without a cap, the first run opens one PR per dependency and every one of
+    # them triggers the full CI matrix plus a smoke test that hits upstream.
+    open-pull-requests-limit: 3
     groups:
       dev-dependencies:
         dependency-type: development
+      production-dependencies:
+        dependency-type: production
+        update-types: [minor, patch]
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    open-pull-requests-limit: 2
+    groups:
+      # Action bumps are almost always safe and land together; one PR keeps
+      # the queue short instead of five near-identical ones.
+      actions:
+        patterns: ['*']
