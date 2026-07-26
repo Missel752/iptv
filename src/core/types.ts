@@ -312,6 +312,8 @@ export interface ApiManifest {
   base_url: string | null;
   counts: {
     channels: number;
+    /** Channels with at least one stream. */
+    playable_channels: number;
     online_channels: number;
     feeds: number;
     streams: number;

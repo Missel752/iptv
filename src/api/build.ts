@@ -247,17 +247,24 @@ export async function buildApi(options: { clean?: boolean } = {}): Promise<ApiBu
   await emit('orphans.json', dataset.orphans.map(toPublicStream));
 
   // Counts make these collections directly useful for building UI filters.
+  /**
+   * `channels` counts everything in the database, `playable` counts the ones
+   * that actually have a stream. The gap is large — roughly a quarter of the
+   * catalogue is watchable — so a UI that only shows `channels` promises far
+   * more than it can deliver.
+   */
   const countChannels = <T>(
     items: readonly T[],
     keyOf: (item: T) => string,
     matches: (channel: PublicChannel, key: string) => boolean,
-  ): Array<T & { channels: number; online: number }> =>
+  ): Array<T & { channels: number; playable: number; online: number }> =>
     items.map((item) => {
       const key = keyOf(item);
       const bucket = publicChannels.filter((channel) => matches(channel, key));
       return {
         ...item,
         channels: bucket.length,
+        playable: bucket.filter((channel) => channel.stream_count > 0).length,
         online: bucket.filter((channel) => channel.online).length,
       };
     });
@@ -305,7 +312,10 @@ export async function buildApi(options: { clean?: boolean } = {}): Promise<ApiBu
       by_country: Object.fromEntries(
         countries
           .filter((country) => country.channels > 0)
-          .map((country) => [country.code, { channels: country.channels, online: country.online }]),
+          .map((country) => [
+            country.code,
+            { channels: country.channels, playable: country.playable, online: country.online },
+          ]),
       ),
     },
     true,
@@ -376,6 +386,8 @@ export async function buildApi(options: { clean?: boolean } = {}): Promise<ApiBu
     base_url: settings.project.base_url,
     counts: {
       channels: publicChannels.length,
+      /** Channels with at least one stream — what a viewer can actually open. */
+      playable_channels: playable.length,
       online_channels: publicChannels.filter((channel) => channel.online).length,
       feeds: dataset.channels.reduce((sum, channel) => sum + channel.feeds.length, 0),
       streams: allStreams.length,

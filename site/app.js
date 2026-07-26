@@ -19,7 +19,10 @@ const state = {
   rendered: 0,
   pageSize: 60,
   query: '',
-  filters: { country: '', category: '', language: '', online: false, hd: false, favourites: false },
+  // `playable` defaults on: roughly three quarters of the catalogue is
+  // metadata for channels with no stream at all, and showing those by
+  // default promises far more than the site can actually play.
+  filters: { country: '', category: '', language: '', playable: true, online: false, hd: false, favourites: false },
   sort: 'relevance',
   detailCache: new Map(),
   epgCache: new Map(),
@@ -153,15 +156,13 @@ async function boot() {
       getJson(`${API}/languages.json`).catch(() => []),
     ]);
 
+    const facetLabel = (item) =>
+      `${item.name} (${formatNumber(item.playable ?? item.channels ?? 0)})`;
     fillSelect($('#filter-country'), countries, 'code', (item) =>
-      `${item.flag ? `${item.flag} ` : ''}${item.name} (${formatNumber(item.channels ?? 0)})`,
+      `${item.flag ? `${item.flag} ` : ''}${facetLabel(item)}`,
     );
-    fillSelect($('#filter-category'), categories, 'id', (item) =>
-      `${item.name} (${formatNumber(item.channels ?? 0)})`,
-    );
-    fillSelect($('#filter-language'), languages, 'code', (item) =>
-      `${item.name} (${formatNumber(item.channels ?? 0)})`,
-    );
+    fillSelect($('#filter-category'), categories, 'id', facetLabel);
+    fillSelect($('#filter-language'), languages, 'code', facetLabel);
 
     for (const country of countries) state.countries.set(country.code.toLowerCase(), country);
     for (const category of categories) state.categories.set(category.id, category);
@@ -180,8 +181,10 @@ async function boot() {
 function fillSelect(select, items, valueKey, labelOf) {
   if (!Array.isArray(items) || items.length === 0) return;
   const fragment = document.createDocumentFragment();
-  for (const item of items) {
-    if ((item.channels ?? 0) === 0) continue;
+  // Counts shown to the user are playable counts — an option reading "(417)"
+  // that yields 232 results once the default filter applies is just wrong.
+  for (const item of [...items].sort((a, b) => (b.playable ?? 0) - (a.playable ?? 0))) {
+    if ((item.playable ?? item.channels ?? 0) === 0) continue;
     const option = el('option', null, labelOf(item));
     option.value = String(item[valueKey]).toLowerCase();
     fragment.append(option);
@@ -195,8 +198,12 @@ function renderBrandMeta() {
     return;
   }
   const { counts, generated_at: generatedAt } = state.manifest;
+  // Lead with what is actually watchable. `channels` counts every database
+  // entry, most of which have no stream attached.
+  const playable = counts.playable_channels ?? counts.channels;
   $('#brand-meta').textContent =
-    `${formatNumber(counts.channels)} channels · ${formatNumber(counts.online_streams)} live`;
+    `${formatNumber(playable)} playable · ${formatNumber(counts.online_streams)} live` +
+    ` · ${formatNumber(counts.channels)} indexed`;
   $('#footer-meta').textContent =
     `Last updated ${new Date(generatedAt).toLocaleString()} · ` +
     `${formatNumber(counts.streams)} streams · ${formatNumber(counts.epg_programmes)} EPG entries · ` +
@@ -204,13 +211,15 @@ function renderBrandMeta() {
 }
 
 function renderStats() {
+  const withStream = state.channels.filter((row) => row[F.STREAMS] > 0);
   const online = state.channels.filter((row) => row[F.ONLINE] === 1).length;
-  const hd = state.channels.filter((row) => parseInt(row[F.QUALITY], 10) >= 720).length;
+  const hd = withStream.filter((row) => parseInt(row[F.QUALITY], 10) >= 720).length;
   $('#stats').innerHTML = '';
   const rows = [
-    ['Channels', formatNumber(state.channels.length)],
-    ['Live now', formatNumber(online)],
+    ['With a stream', formatNumber(withStream.length)],
+    ['Working now', formatNumber(online)],
     ['HD or better', formatNumber(hd)],
+    ['Indexed total', formatNumber(state.channels.length)],
     ['Favourites', formatNumber(state.favourites.size)],
   ];
   for (const [label, value] of rows) {
@@ -224,10 +233,11 @@ function renderStats() {
 
 function applyFilters(resetScroll = true) {
   const query = normalise(state.query);
-  const { country, category, language, online, hd, favourites } = state.filters;
+  const { country, category, language, playable, online, hd, favourites } = state.filters;
 
   let rows = state.channels;
 
+  if (playable) rows = rows.filter((row) => row[F.STREAMS] > 0);
   if (favourites) rows = rows.filter((row) => state.favourites.has(row[F.ID]));
   if (online) rows = rows.filter((row) => row[F.ONLINE] === 1);
   if (hd) rows = rows.filter((row) => parseInt(row[F.QUALITY], 10) >= 720);
@@ -273,7 +283,10 @@ function applyFilters(resetScroll = true) {
   $('#results').innerHTML = '';
   if (resetScroll) window.scrollTo({ top: 0, behavior: 'auto' });
 
-  $('#result-count').textContent = `${formatNumber(rows.length)} channel${rows.length === 1 ? '' : 's'}`;
+  const label = `${formatNumber(rows.length)} channel${rows.length === 1 ? '' : 's'}`;
+  $('#result-count').textContent = state.filters.playable
+    ? `${label} with a stream`
+    : label;
   $('#empty').hidden = rows.length > 0;
 
   renderChips();
@@ -295,6 +308,7 @@ function renderChips() {
   if (state.filters.language) {
     active.push(['language', state.languages.get(state.filters.language)?.name ?? state.filters.language]);
   }
+  if (state.filters.playable) active.push(['playable', 'Has a stream']);
   if (state.filters.online) active.push(['online', 'Working only']);
   if (state.filters.hd) active.push(['hd', 'HD+']);
   if (state.filters.favourites) active.push(['favourites', 'Favourites']);
@@ -312,7 +326,7 @@ function renderChips() {
 }
 
 function clearFilter(key) {
-  if (key === 'online' || key === 'hd' || key === 'favourites') {
+  if (key === 'playable' || key === 'online' || key === 'hd' || key === 'favourites') {
     state.filters[key] = false;
     $(`#filter-${key === 'favourites' ? 'favorites' : key}`).checked = false;
   } else {
@@ -323,11 +337,12 @@ function clearFilter(key) {
 }
 
 function resetFilters() {
-  state.filters = { country: '', category: '', language: '', online: false, hd: false, favourites: false };
+  state.filters = { country: '', category: '', language: '', playable: true, online: false, hd: false, favourites: false };
   state.query = '';
   $('#search').value = '';
   for (const id of ['country', 'category', 'language']) $(`#filter-${id}`).value = '';
   for (const id of ['online', 'hd', 'favorites']) $(`#filter-${id}`).checked = false;
+  $('#filter-playable').checked = true;
   applyFilters();
 }
 
@@ -375,6 +390,17 @@ function renderCard(row) {
   card.append(top);
 
   const tags = el('div', 'card__tags');
+
+  if (row[F.STREAMS] === 0) {
+    // No stream at all: the channel exists in the database but there is
+    // nothing to play, which is a different thing from "not yet checked".
+    tags.append(el('span', 'dot dot--unknown'));
+    tags.append(el('span', 'tag', 'No stream'));
+    card.append(tags);
+    card.addEventListener('click', () => openChannel(row[F.ID]));
+    return card;
+  }
+
   const status = scoreClass(row[F.SCORE], row[F.ONLINE] === 1);
   tags.append(el('span', `dot dot--${status}`));
   tags.append(
@@ -677,9 +703,12 @@ function writeUrlState() {
   const params = new URLSearchParams();
   if (state.query) params.set('q', state.query);
   for (const [key, value] of Object.entries(state.filters)) {
+    if (key === 'playable') continue;
     if (value === true) params.set(key, '1');
     else if (value) params.set(key, value);
   }
+  // On by default, so only the disabled state is worth putting in the URL.
+  if (!state.filters.playable) params.set('all', '1');
   if (state.sort !== 'relevance') params.set('sort', state.sort);
   const next = params.toString();
   history.replaceState(null, '', next ? `?${next}` : location.pathname);
@@ -702,6 +731,10 @@ function readUrlState() {
       state.filters[key] = true;
       $(`#filter-${id}`).checked = true;
     }
+  }
+  if (params.get('all') === '1') {
+    state.filters.playable = false;
+    $('#filter-playable').checked = false;
   }
   const sort = params.get('sort');
   if (sort) {
@@ -734,6 +767,10 @@ function wireEvents() {
     });
   }
 
+  $('#filter-playable').addEventListener('change', (event) => {
+    state.filters.playable = event.target.checked;
+    applyFilters();
+  });
   $('#filter-online').addEventListener('change', (event) => {
     state.filters.online = event.target.checked;
     applyFilters();
