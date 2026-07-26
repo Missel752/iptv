@@ -118,6 +118,18 @@ export interface DiscoverOptions {
   skipValidation?: boolean;
   /** Cap on candidates probed in one run. */
   maxProbes?: number;
+  /**
+   * Merge accepted candidates straight into `config/discovered.m3u` instead of
+   * only writing a proposal for review.
+   *
+   * This is safe precisely because of what the gates already guarantee: a
+   * candidate only gets here if it came from a source the maintainer put in
+   * `discovery.yml`, matched a channel we already index above the confidence
+   * threshold, and answered a live probe. It is a new URL for a known channel
+   * from a known list — not a new source. Adding an unvetted *source* still
+   * requires a human editing `discovery.yml`.
+   */
+  apply?: boolean;
 }
 
 /** Runs a full discovery pass and writes the proposal report. */
@@ -278,12 +290,58 @@ export async function runDiscovery(options: DiscoverOptions = {}): Promise<Disco
   await writeJson(path.join(PATHS.data, 'discovery-report.json'), report, { pretty: true });
   await writeProposal(report);
 
+  if (options.apply) {
+    const added = await applyToPlaylist(report);
+    log.success(`Applied ${added} new stream(s) to config/discovered.m3u`);
+  }
+
   log.success(
     `Discovery: ${finalAccepted.length} accepted, ${rejected.length} rejected ` +
       `out of ${fresh.size} new candidates`,
   );
 
   return report;
+}
+
+/**
+ * Merges accepted candidates into the tracked `config/discovered.m3u`, which
+ * `config/sources.yml` loads as a low-trust source on the next sync.
+ *
+ * Existing entries are preserved and deduplicated by normalised stream key, so
+ * repeated runs converge instead of appending the same stream forever.
+ */
+async function applyToPlaylist(report: DiscoveryReport): Promise<number> {
+  const { readText, writeText, exists } = await import('../core/fs.js');
+  const { parseM3u, writeM3u } = await import('../core/m3u.js');
+  const target = path.join(PATHS.root, 'config', 'discovered.m3u');
+
+  const existing = (await exists(target)) ? parseM3u(await readText(target)).entries : [];
+  const seen = new Set(existing.map((entry) => streamKey(entry.url)));
+
+  let added = 0;
+  for (const candidate of report.accepted) {
+    if (seen.has(candidate.key)) continue;
+    seen.add(candidate.key);
+    added++;
+    existing.push({
+      duration: -1,
+      title: candidate.title,
+      url: candidate.url,
+      attributes: {
+        'tvg-id': candidate.suggested_channel ?? '',
+        'tvg-name': candidate.title,
+        'group-title': candidate.attributes['group-title'] ?? '',
+        'nexus-source': candidate.source,
+        'nexus-confidence': String(candidate.confidence),
+      },
+      headers: {},
+      group: candidate.attributes['group-title'] ?? null,
+    });
+  }
+
+  existing.sort((a, b) => (a.attributes['tvg-id'] ?? '').localeCompare(b.attributes['tvg-id'] ?? ''));
+  await writeText(target, writeM3u(existing));
+  return added;
 }
 
 /** Writes an M3U + markdown proposal that a maintainer can review in a PR. */

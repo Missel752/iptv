@@ -43,13 +43,32 @@ sources:
     countries: [US, GB, CA, AU]
     trust: 0.8
 
-  - id: i-mjh-nz
-    name: Samsung TV Plus / Plex / Pluto aggregate
-    url: https://raw.githubusercontent.com/dearbulut/iptv/state/epg/i-mjh-nz.xml.gz
+  # These three are published as finished XMLTV and refreshed daily at source,
+  # so they are downloaded directly rather than grabbed. They cover exactly the
+  # FAST services that most of our streams come from.
+  - id: samsung-tvplus
+    name: Samsung TV Plus (official guide)
+    url: https://i.mjh.nz/SamsungTVPlus/all.xml.gz
     enabled: true
     lang: en
-    countries: [US, GB, AU, NZ, CA]
-    trust: 0.75
+    countries: [US, GB, DE, FR, IT, ES, CA, KR, IN, AT, CH]
+    trust: 0.85
+
+  - id: plutotv-guide
+    name: Pluto TV (official guide)
+    url: https://i.mjh.nz/PlutoTV/all.xml.gz
+    enabled: true
+    lang: en
+    countries: [US, GB, DE, ES, FR, IT, BR, MX, CA, AR, CL, DK, NO, SE]
+    trust: 0.85
+
+  - id: plex-guide
+    name: Plex live channels (official guide)
+    url: https://i.mjh.nz/Plex/all.xml.gz
+    enabled: true
+    lang: en
+    countries: [US, GB, CA, AU]
+    trust: 0.8
 
   # --- Türkiye -------------------------------------------------------------
   - id: tvplus-com-tr

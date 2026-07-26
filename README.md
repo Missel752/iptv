@@ -77,6 +77,21 @@ shards, so one guide URL works with every generated playlist.
 
 ## Quick start
 
+### Get a playlist (nothing to install)
+
+<!-- PLAYLISTS:START -->
+
+| Playlist | Contents | URL |
+| --- | --- | --- |
+| **Best** | One stream per channel, best first | `https://dearbulut.github.io/iptv/playlists/best.m3u` |
+| **Working only** | Only streams that passed the last health check | `https://dearbulut.github.io/iptv/playlists/online.m3u` |
+| **Everything** | Every stream, including backups | `https://dearbulut.github.io/iptv/playlists/index.m3u` |
+| **EPG** | Programme guide for every linked channel | `https://dearbulut.github.io/iptv/epg/guide.xml.gz` |
+
+Per-country, per-category and per-language playlists: [**PLAYLISTS.md**](PLAYLISTS.md).
+
+<!-- PLAYLISTS:END -->
+
 ### Use the API (nothing to install)
 
 Once deployed, everything is a plain file on a CDN. No key, no rate limit:
@@ -234,11 +249,14 @@ Full machine-readable schema: **`/api/v1/openapi.json`**. Human summary:
 
 | Workflow | Schedule | Does |
 | --- | --- | --- |
-| `sync.yml` | every 6 h | Aggregate → EPG → API → deploy to Pages |
+| `sync.yml` | every 6 h | Aggregate → EPG → API → deploy to Pages, refresh `PLAYLISTS.md` |
 | `health.yml` | 2×/day | Probe streams in 6 parallel shards, merge, persist |
-| `epg.yml` | nightly | Grab each configured EPG site, publish XMLTV |
-| `discover.yml` | weekly | Find new streams, validate, open a PR |
+| `epg.yml` | nightly 01:00 | Grab each configured EPG site, publish XMLTV |
+| `discover.yml` | nightly 02:00 | Find new streams, probe them, commit the survivors |
 | `ci.yml` | on push/PR | Typecheck, unit tests, pipeline smoke test |
+
+Full detail, including how to run the automation under its own bot identity:
+[`docs/AUTOMATION.md`](docs/AUTOMATION.md).
 
 Health history and grabbed guides both live on an orphan `state` branch between
 runs — health history is the memory that makes scoring mean anything, and
@@ -246,8 +264,13 @@ re-grabbing every guide on every sync would be gratuitous. Health Scan and EPG
 Grab each own their own paths there and merge rather than force-push, so
 neither can wipe the other's data. Sync only reads it.
 
-Nothing else is committed by automation — discovery results arrive as a **pull
-request** you review, never as a silent push.
+Discovery commits directly, but only within a boundary that a human set: a
+stream is auto-accepted only if it came from a source already listed in
+`config/discovery.yml`, matched a channel already in the index, and answered a
+live probe. It lands in `config/discovered.m3u` at low trust, so a curated list
+always outranks it and health scoring retires it like anything else. Adding a
+new *source* is still a human decision — that is the line between a curated
+index and an unattended scraper.
 
 ---
 

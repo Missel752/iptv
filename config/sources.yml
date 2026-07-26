@@ -18,6 +18,17 @@ sources:
     license: The Unlicense
     homepage: https://github.com/iptv-org/iptv
 
+  # Streams found by the nightly discovery run and auto-accepted: each one
+  # matched a channel we already index and answered a live probe. Trust is low
+  # so a curated list always outranks them, and health scoring retires them
+  # like any other stream if they stop responding.
+  - id: discovered
+    name: Auto-discovered streams
+    type: m3u
+    url: https://raw.githubusercontent.com/dearbulut/iptv/main/config/discovered.m3u
+    enabled: true
+    trust: 0.35
+
   # --- Public broadcaster / free-to-air streams -----------------------------
   # These are official, publicly documented FAST feeds. Uncomment what you want.
 

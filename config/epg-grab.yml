@@ -51,14 +51,10 @@ sites:
     timeout: 30000
     max_connections: 10
 
-  - site: i.mjh.nz
-    lang: en
-    countries: [US, GB, AU, NZ, CA]
-    # 10932 channels, 30% mapped — biggest absolute yield, but the slowest
-    # grab in the set. Disable this one first if the workflow starts timing out.
-    enabled: true
-    timeout: 45000
-    max_connections: 8
+  # i.mjh.nz is deliberately NOT grabbed here: that host publishes finished
+  # XMLTV for Samsung TV Plus, Pluto and Plex directly, so scraping it through
+  # the grabber would spend an hour rebuilding a file we can just download.
+  # See the matching entries in config/epg-sources.yml.
 
   # --- Türkiye -------------------------------------------------------------
   - site: tvplus.com.tr

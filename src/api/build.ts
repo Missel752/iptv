@@ -32,6 +32,7 @@ import { summarise, uptimeRatio } from '../health/scoring.js';
 import { buildPlaylists } from './playlists.js';
 import { buildSearchIndex } from './search-index.js';
 import { buildOpenApi } from './openapi.js';
+import { buildPlaylistCatalogue, buildReadmePlaylistBlock } from './catalogue.js';
 import type { EpgLink } from '../epg/index.js';
 
 const log = new Logger('api');
@@ -425,6 +426,38 @@ export async function buildApi(options: { clean?: boolean } = {}): Promise<ApiBu
   await emit('index.json', manifest, true);
   await emit('openapi.json', buildOpenApi(settings, dataset.generated_at), true);
 
+  // ---- repository-facing catalogue ---------------------------------------
+  // PLAYLISTS.md lives at the repo root rather than in public/ so it renders
+  // on GitHub, which is where people actually go looking for a playlist URL.
+  const catalogue = buildPlaylistCatalogue({
+    settings,
+    generatedAt: dataset.generated_at,
+    files: playlistResult.files,
+    counts: {
+      channels: manifest.counts.channels,
+      playable_channels: manifest.counts.playable_channels,
+      streams: manifest.counts.streams,
+      online_streams: manifest.counts.online_streams,
+      epg_programmes: manifest.counts.epg_programmes,
+    },
+    countryFlags: new Map(dataset.countries.map((country) => [country.name, country.flag])),
+  });
+  await writeText(path.join(PATHS.root, 'PLAYLISTS.md'), catalogue);
+
+  // Keep the README table in step with the generated catalogue.
+  const readmePath = path.join(PATHS.root, 'README.md');
+  if (await exists(readmePath)) {
+    const { readText } = await import('../core/fs.js');
+    const readme = await readText(readmePath);
+    const block = buildReadmePlaylistBlock(settings);
+    const marked = /<!-- PLAYLISTS:START -->[\s\S]*?<!-- PLAYLISTS:END -->/;
+    if (marked.test(readme)) {
+      const updated = readme.replace(marked, block);
+      if (updated !== readme) await writeText(readmePath, updated);
+    }
+  }
+  log.info('Wrote PLAYLISTS.md');
+
   // ---- static site --------------------------------------------------------
   if (await exists(PATHS.site)) {
     await copyDir(PATHS.site, PATHS.public);
@@ -445,3 +478,4 @@ export type { Dataset };
 export * from './playlists.js';
 export * from './search-index.js';
 export * from './openapi.js';
+export * from './catalogue.js';

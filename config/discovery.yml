@@ -11,7 +11,14 @@ sources:
   - id: iptv-org-index
     name: iptv-org country index
     url: https://iptv-org.github.io/iptv/index.country.m3u
-    enabled: false
+    enabled: true
+    mode: playlist
+    trust: 0.8
+
+  - id: iptv-org-categories
+    name: iptv-org category index
+    url: https://iptv-org.github.io/iptv/index.category.m3u
+    enabled: true
     mode: playlist
     trust: 0.8
 

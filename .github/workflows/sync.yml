@@ -23,9 +23,10 @@ on:
       - '.github/workflows/sync.yml'
 
 permissions:
-  # Read-only on contents: Sync consumes the state branch but never writes it.
-  # Health Scan and EPG Grab own their own files there.
-  contents: read
+  # Write is only used to refresh the generated PLAYLISTS.md and the README
+  # table on `main`. Sync never writes the state branch — Health Scan and EPG
+  # Grab own their own files there.
+  contents: write
   pages: write
   id-token: write
 
@@ -111,6 +112,21 @@ jobs:
             gh.appendFileSync(process.env.GITHUB_OUTPUT, 'channels=' + m.counts.channels + '\n');
             gh.appendFileSync(process.env.GITHUB_OUTPUT, 'streams=' + m.counts.streams + '\n');
           "
+
+      - name: Refresh the generated playlist catalogue
+        run: |
+          if git diff --quiet -- PLAYLISTS.md README.md; then
+            echo "Catalogue unchanged"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PLAYLISTS.md README.md
+          git commit -m "docs: refresh playlist catalogue"
+          # PLAYLISTS.md is not in this workflow's push paths, so committing it
+          # here cannot re-trigger the workflow.
+          git pull --rebase --quiet origin main || true
+          git push origin HEAD:main
 
       - uses: actions/upload-pages-artifact@v3
         with:

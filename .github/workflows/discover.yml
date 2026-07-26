@@ -1,34 +1,52 @@
-name: Discover Sources
+name: Discover Streams
 
-# Scans configured index pages for new streams, validates each candidate with a
-# live probe, and opens a pull request with the proposal. Nothing is merged
-# automatically — a human reviews the diff.
+# Scans the playlists listed in `config/discovery.yml` for streams we do not
+# already have, validates each one with a live probe, and commits the accepted
+# ones to `config/discovered.m3u`. The next sync picks them up automatically.
+#
+# What is automatic and what is not: a candidate is auto-accepted only if it
+# came from a source a human already put in `discovery.yml`, matched a channel
+# we already index above the confidence threshold, and answered a live probe.
+# Adding a new *source* is still a human decision — that is the boundary
+# between a curated index and an unattended scraper.
 
 on:
   schedule:
-    # Mondays at 04:00 UTC.
-    - cron: '0 4 * * 1'
+    # 02:00 UTC daily, between the EPG grab and the morning sync.
+    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       max_probes:
         description: 'Maximum candidates to validate'
         type: string
-        default: '600'
+        default: '800'
+      apply:
+        description: 'Commit accepted streams (off = open a PR instead)'
+        type: boolean
+        default: true
 
 permissions:
   contents: write
   pull-requests: write
 
 concurrency:
-  group: discover
+  group: discover-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   discover:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
+
+      - name: Mint bot token
+        id: bot
+        uses: actions/create-github-app-token@v1
+        continue-on-error: true
+        with:
+          app-id: ${{ vars.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
 
       - uses: actions/setup-node@v4
         with:
@@ -36,6 +54,9 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      - name: Verify ffprobe
+        run: ffprobe -version | head -1
 
       - name: Restore rejection memory
         continue-on-error: true
@@ -48,36 +69,49 @@ jobs:
         run: npm run cli -- aggregate
 
       - name: Discover
-        run: npm run cli -- discover --max-probes ${{ inputs.max_probes || '600' }}
-
-      - name: Check for proposals
-        id: check
         run: |
-          if [ ! -s .data/proposals/discovered.m3u ]; then
-            echo "found=0" >> "$GITHUB_OUTPUT"
-            echo "No new streams discovered." >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-          COUNT=$(node -e "console.log(require('./.data/discovery-report.json').accepted.length)")
+          ARGS="--max-probes ${{ inputs.max_probes || '800' }}"
+          if [ "${{ inputs.apply == false }}" != "true" ]; then ARGS="$ARGS --apply"; fi
+          npm run cli -- discover $ARGS
+
+      - name: Summarise
+        id: summary
+        run: |
+          COUNT=$(node -e "console.log(require('./.data/discovery-report.json').accepted.length)" 2>/dev/null || echo 0)
           echo "found=$COUNT" >> "$GITHUB_OUTPUT"
-          cat .data/proposals/discovered.md >> "$GITHUB_STEP_SUMMARY"
+          if [ -f .data/proposals/discovered.md ]; then
+            head -20 .data/proposals/discovered.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if git diff --quiet -- config/discovered.m3u; then
+            echo "changed=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=1" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Stage proposal
-        if: steps.check.outputs.found != '0'
+      - name: Commit new streams
+        if: steps.summary.outputs.changed == '1'
+        env:
+          GH_TOKEN: ${{ steps.bot.outputs.token || secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p proposals
-          cp .data/proposals/discovered.m3u proposals/discovered.m3u
-          cp .data/proposals/discovered.md proposals/discovered.md
+          TOTAL=$(grep -c '^#EXTINF' config/discovered.m3u || echo 0)
+          git config user.name  "${{ steps.bot.outputs.token && 'iptv-nexus-bot[bot]' || 'github-actions[bot]' }}"
+          git config user.email "${{ steps.bot.outputs.token && 'iptv-nexus-bot[bot]@users.noreply.github.com' || '41898282+github-actions[bot]@users.noreply.github.com' }}"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git add config/discovered.m3u
+          git commit -m "discovery: +${{ steps.summary.outputs.found }} stream(s), ${TOTAL} total
 
-      - name: Open pull request
-        if: steps.check.outputs.found != '0'
-        uses: peter-evans/create-pull-request@v6
-        with:
-          branch: discovery/auto
-          delete-branch: true
-          commit-message: 'discovery: ${{ steps.check.outputs.found }} new stream candidate(s)'
-          title: 'Discovery: ${{ steps.check.outputs.found }} new stream candidate(s)'
-          body-path: .data/proposals/discovered.md
-          labels: discovery, automated
-          add-paths: |
-            proposals/**
+          Every entry matched a channel already in the index and answered a
+          live probe. Retired automatically by health scoring if it stops
+          responding."
+          git pull --rebase --quiet origin main || true
+          git push origin HEAD:main
+
+      - name: Persist rejection memory
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          test -f .data/discovery.json || exit 0
+          chmod +x scripts/publish-state.sh
+          ./scripts/publish-state.sh "discovery: $(date -u +%FT%TZ)" .data/discovery.json:discovery.json

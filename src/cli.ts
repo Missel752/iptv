@@ -98,9 +98,14 @@ program
   .description('Scan configured sources for new streams and write a proposal')
   .option('--skip-validation', 'do not probe candidates', false)
   .option('--max-probes <n>', 'cap the number of live probes', Number)
-  .action(async (options: { skipValidation: boolean; maxProbes?: number }) => {
+  .option('--apply', 'merge accepted streams into config/discovered.m3u', false)
+  .action(async (options: { skipValidation: boolean; maxProbes?: number; apply: boolean }) => {
     const report = await logger.time('Discovery', () =>
-      runDiscovery({ skipValidation: options.skipValidation, maxProbes: options.maxProbes }),
+      runDiscovery({
+        skipValidation: options.skipValidation,
+        maxProbes: options.maxProbes,
+        apply: options.apply,
+      }),
     );
     logger.info(`accepted=${report.accepted.length} rejected=${report.rejected.length}`);
   });
