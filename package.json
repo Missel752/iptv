@@ -54,5 +54,13 @@
     "hls",
     "streaming",
     "api"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dearbulut/iptv.git"
+  },
+  "homepage": "https://dearbulut.github.io/iptv",
+  "bugs": {
+    "url": "https://github.com/dearbulut/iptv/issues"
+  }
 }

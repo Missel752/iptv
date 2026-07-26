@@ -71,7 +71,7 @@ shards, so any player can use one guide URL for everything.
 Once deployed, everything is a plain file on a CDN. No key, no rate limit:
 
 ```bash
-BASE=https://<your-user>.github.io/<your-repo>
+BASE=https://dearbulut.github.io/iptv
 
 curl "$BASE/api/v1/index.json"                  # manifest & counts
 curl "$BASE/api/v1/channels.json"               # every channel
@@ -102,7 +102,7 @@ console.log(picks[0].name, picks[0].streams[0].url);
 1. **Fork this repository.**
 2. Enable GitHub Pages: *Settings → Pages → Source: **GitHub Actions***.
 3. Run the **Sync & Deploy** workflow from the Actions tab.
-4. Your API is live at `https://<user>.github.io/<repo>/`.
+4. Your API is live at `https://dearbulut.github.io/iptv/`.
 
 From then on it maintains itself: sync every 6 hours, health scans twice daily,
 source discovery weekly.
@@ -110,7 +110,7 @@ source discovery weekly.
 ### Run locally
 
 ```bash
-git clone https://github.com/<user>/<repo>.git && cd <repo>
+git clone https://github.com/dearbulut/iptv.git && cd iptv
 npm install
 
 npm run cli -- aggregate               # fetch and merge the dataset
