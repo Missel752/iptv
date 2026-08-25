@@ -1,9 +1,9 @@
 # Playlists
 
 > Generated automatically — do not edit by hand.
-> Last updated **2026-08-24 19:01 UTC**.
+> Last updated **2026-08-25 01:54 UTC**.
 
-9,939 channels with a working stream, out of 39,285 indexed. 12,373 streams responded on the last scan.
+9,964 channels with a working stream, out of 39,296 indexed. 12,373 streams responded on the last scan.
 
 ## Main playlists
 
@@ -38,7 +38,7 @@ One playlist per country, best stream per channel.
 
 | Country | Channels | Streams | URL |
 | --- | ---: | ---: | --- |
-| 🇺🇸 United States | 1,695 | 1,695 | `https://dearbulut.github.io/iptv/playlists/country/us.m3u` |
+| 🇺🇸 United States | 1,698 | 1,698 | `https://dearbulut.github.io/iptv/playlists/country/us.m3u` |
 | 🇮🇳 India | 684 | 684 | `https://dearbulut.github.io/iptv/playlists/country/in.m3u` |
 | 🇷🇺 Russia | 418 | 418 | `https://dearbulut.github.io/iptv/playlists/country/ru.m3u` |
 | 🇩🇪 Germany | 414 | 414 | `https://dearbulut.github.io/iptv/playlists/country/de.m3u` |
@@ -53,7 +53,7 @@ One playlist per country, best stream per channel.
 | 🇫🇷 France | 177 | 177 | `https://dearbulut.github.io/iptv/playlists/country/fr.m3u` |
 | 🇳🇱 Netherlands | 170 | 170 | `https://dearbulut.github.io/iptv/playlists/country/nl.m3u` |
 | 🇵🇪 Peru | 168 | 168 | `https://dearbulut.github.io/iptv/playlists/country/pe.m3u` |
-| 🇦🇷 Argentina | 158 | 158 | `https://dearbulut.github.io/iptv/playlists/country/ar.m3u` |
+| 🇦🇷 Argentina | 161 | 161 | `https://dearbulut.github.io/iptv/playlists/country/ar.m3u` |
 | 🇲🇽 Mexico | 157 | 157 | `https://dearbulut.github.io/iptv/playlists/country/mx.m3u` |
 | 🇨🇦 Canada | 154 | 154 | `https://dearbulut.github.io/iptv/playlists/country/ca.m3u` |
 | 🇺🇦 Ukraine | 148 | 148 | `https://dearbulut.github.io/iptv/playlists/country/ua.m3u` |
@@ -63,10 +63,10 @@ One playlist per country, best stream per channel.
 | 🇮🇷 Iran | 120 | 120 | `https://dearbulut.github.io/iptv/playlists/country/ir.m3u` |
 | 🇨🇴 Colombia | 106 | 106 | `https://dearbulut.github.io/iptv/playlists/country/co.m3u` |
 | 🇵🇱 Poland | 96 | 96 | `https://dearbulut.github.io/iptv/playlists/country/pl.m3u` |
-| 🇵🇰 Pakistan | 82 | 82 | `https://dearbulut.github.io/iptv/playlists/country/pk.m3u` |
+| 🇷🇴 Romania | 92 | 92 | `https://dearbulut.github.io/iptv/playlists/country/ro.m3u` |
+| 🇵🇰 Pakistan | 84 | 84 | `https://dearbulut.github.io/iptv/playlists/country/pk.m3u` |
 | 🇻🇳 Vietnam | 81 | 81 | `https://dearbulut.github.io/iptv/playlists/country/vn.m3u` |
 | 🇪🇨 Ecuador | 80 | 80 | `https://dearbulut.github.io/iptv/playlists/country/ec.m3u` |
-| 🇷🇴 Romania | 77 | 77 | `https://dearbulut.github.io/iptv/playlists/country/ro.m3u` |
 | 🇭🇳 Honduras | 76 | 76 | `https://dearbulut.github.io/iptv/playlists/country/hn.m3u` |
 | 🇰🇷 South Korea | 73 | 73 | `https://dearbulut.github.io/iptv/playlists/country/kr.m3u` |
 | 🇬🇷 Greece | 72 | 72 | `https://dearbulut.github.io/iptv/playlists/country/gr.m3u` |
@@ -82,9 +82,9 @@ One playlist per country, best stream per channel.
 | 🇵🇹 Portugal | 57 | 57 | `https://dearbulut.github.io/iptv/playlists/country/pt.m3u` |
 | 🇸🇦 Saudi Arabia | 55 | 55 | `https://dearbulut.github.io/iptv/playlists/country/sa.m3u` |
 | 🇮🇶 Iraq | 55 | 55 | `https://dearbulut.github.io/iptv/playlists/country/iq.m3u` |
-| 🇳🇬 Nigeria | 52 | 52 | `https://dearbulut.github.io/iptv/playlists/country/ng.m3u` |
+| 🇳🇬 Nigeria | 53 | 53 | `https://dearbulut.github.io/iptv/playlists/country/ng.m3u` |
 | 🇸🇰 Slovakia | 48 | 48 | `https://dearbulut.github.io/iptv/playlists/country/sk.m3u` |
-| 🇦🇺 Australia | 39 | 39 | `https://dearbulut.github.io/iptv/playlists/country/au.m3u` |
+| 🇦🇺 Australia | 40 | 40 | `https://dearbulut.github.io/iptv/playlists/country/au.m3u` |
 | 🇧🇪 Belgium | 39 | 39 | `https://dearbulut.github.io/iptv/playlists/country/be.m3u` |
 | 🇰🇪 Kenya | 38 | 38 | `https://dearbulut.github.io/iptv/playlists/country/ke.m3u` |
 | 🇦🇪 United Arab Emirates | 38 | 38 | `https://dearbulut.github.io/iptv/playlists/country/ae.m3u` |
@@ -115,15 +115,15 @@ One playlist per country, best stream per channel.
 | 🇳🇮 Nicaragua | 20 | 20 | `https://dearbulut.github.io/iptv/playlists/country/ni.m3u` |
 | 🇵🇸 Palestine | 19 | 19 | `https://dearbulut.github.io/iptv/playlists/country/ps.m3u` |
 | 🇪🇪 Estonia | 19 | 19 | `https://dearbulut.github.io/iptv/playlists/country/ee.m3u` |
-| 🇸🇮 Slovenia | 19 | 19 | `https://dearbulut.github.io/iptv/playlists/country/si.m3u` |
 | 🇨🇮 Ivory Coast | 18 | 18 | `https://dearbulut.github.io/iptv/playlists/country/ci.m3u` |
 | 🇲🇾 Malaysia | 18 | 18 | `https://dearbulut.github.io/iptv/playlists/country/my.m3u` |
 | 🇪🇬 Egypt | 18 | 18 | `https://dearbulut.github.io/iptv/playlists/country/eg.m3u` |
 | 🇯🇴 Jordan | 18 | 18 | `https://dearbulut.github.io/iptv/playlists/country/jo.m3u` |
+| 🇸🇮 Slovenia | 18 | 18 | `https://dearbulut.github.io/iptv/playlists/country/si.m3u` |
+| 🇲🇲 Myanmar | 17 | 17 | `https://dearbulut.github.io/iptv/playlists/country/mm.m3u` |
 | 🇦🇿 Azerbaijan | 17 | 17 | `https://dearbulut.github.io/iptv/playlists/country/az.m3u` |
 | 🇧🇿 Belize | 17 | 17 | `https://dearbulut.github.io/iptv/playlists/country/bz.m3u` |
 | 🇮🇪 Ireland | 17 | 17 | `https://dearbulut.github.io/iptv/playlists/country/ie.m3u` |
-| 🇲🇲 Myanmar | 16 | 16 | `https://dearbulut.github.io/iptv/playlists/country/mm.m3u` |
 | 🇨🇩 Democratic Republic of the Congo | 16 | 16 | `https://dearbulut.github.io/iptv/playlists/country/cd.m3u` |
 | 🇱🇹 Lithuania | 16 | 16 | `https://dearbulut.github.io/iptv/playlists/country/lt.m3u` |
 | 🇭🇰 Hong Kong | 16 | 16 | `https://dearbulut.github.io/iptv/playlists/country/hk.m3u` |
@@ -136,9 +136,9 @@ One playlist per country, best stream per channel.
 | 🇦🇫 Afghanistan | 14 | 14 | `https://dearbulut.github.io/iptv/playlists/country/af.m3u` |
 | 🇹🇯 Tajikistan | 14 | 14 | `https://dearbulut.github.io/iptv/playlists/country/tj.m3u` |
 | 🇧🇾 Belarus | 14 | 14 | `https://dearbulut.github.io/iptv/playlists/country/by.m3u` |
-| 🇳🇿 New Zealand | 14 | 14 | `https://dearbulut.github.io/iptv/playlists/country/nz.m3u` |
 | 🇯🇵 Japan | 14 | 14 | `https://dearbulut.github.io/iptv/playlists/country/jp.m3u` |
 | 🇱🇰 Sri Lanka | 13 | 13 | `https://dearbulut.github.io/iptv/playlists/country/lk.m3u` |
+| 🇳🇿 New Zealand | 13 | 13 | `https://dearbulut.github.io/iptv/playlists/country/nz.m3u` |
 | 🇭🇹 Haiti | 13 | 13 | `https://dearbulut.github.io/iptv/playlists/country/ht.m3u` |
 | 🇩🇰 Denmark | 12 | 12 | `https://dearbulut.github.io/iptv/playlists/country/dk.m3u` |
 | 🇱🇻 Latvia | 12 | 12 | `https://dearbulut.github.io/iptv/playlists/country/lv.m3u` |
@@ -165,6 +165,7 @@ One playlist per country, best stream per channel.
 | 🇲🇪 Montenegro | 7 | 7 | `https://dearbulut.github.io/iptv/playlists/country/me.m3u` |
 | 🇸🇽 Sint Maarten | 6 | 6 | `https://dearbulut.github.io/iptv/playlists/country/sx.m3u` |
 | 🇩🇿 Algeria | 6 | 6 | `https://dearbulut.github.io/iptv/playlists/country/dz.m3u` |
+| 🇮🇸 Iceland | 6 | 6 | `https://dearbulut.github.io/iptv/playlists/country/is.m3u` |
 | 🇹🇹 Trinidad and Tobago | 6 | 6 | `https://dearbulut.github.io/iptv/playlists/country/tt.m3u` |
 | 🇧🇶 Bonaire | 6 | 6 | `https://dearbulut.github.io/iptv/playlists/country/bq.m3u` |
 | 🇧🇫 Burkina Faso | 6 | 6 | `https://dearbulut.github.io/iptv/playlists/country/bf.m3u` |
@@ -172,7 +173,6 @@ One playlist per country, best stream per channel.
 | 🇲🇿 Mozambique | 6 | 6 | `https://dearbulut.github.io/iptv/playlists/country/mz.m3u` |
 | 🇬🇳 Guinea | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/country/gn.m3u` |
 | 🇴🇲 Oman | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/country/om.m3u` |
-| 🇮🇸 Iceland | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/country/is.m3u` |
 | 🇧🇭 Bahrain | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/country/bh.m3u` |
 | 🇨🇬 Republic of the Congo | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/country/cg.m3u` |
 | 🇬🇾 Guyana | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/country/gy.m3u` |
@@ -227,29 +227,29 @@ One playlist per category — news, sports, movies, music and so on.
 
 | Category | Channels | Streams | URL |
 | --- | ---: | ---: | --- |
-| General | 2,511 | 2,511 | `https://dearbulut.github.io/iptv/playlists/category/general.m3u` |
-| News | 920 | 920 | `https://dearbulut.github.io/iptv/playlists/category/news.m3u` |
+| General | 2,516 | 2,516 | `https://dearbulut.github.io/iptv/playlists/category/general.m3u` |
+| News | 925 | 925 | `https://dearbulut.github.io/iptv/playlists/category/news.m3u` |
 | Entertainment | 756 | 756 | `https://dearbulut.github.io/iptv/playlists/category/entertainment.m3u` |
 | Religious | 726 | 726 | `https://dearbulut.github.io/iptv/playlists/category/religious.m3u` |
-| Music | 693 | 693 | `https://dearbulut.github.io/iptv/playlists/category/music.m3u` |
-| Movies | 583 | 583 | `https://dearbulut.github.io/iptv/playlists/category/movies.m3u` |
-| Sports | 415 | 415 | `https://dearbulut.github.io/iptv/playlists/category/sports.m3u` |
+| Music | 695 | 695 | `https://dearbulut.github.io/iptv/playlists/category/music.m3u` |
+| Movies | 584 | 584 | `https://dearbulut.github.io/iptv/playlists/category/movies.m3u` |
+| Sports | 419 | 419 | `https://dearbulut.github.io/iptv/playlists/category/sports.m3u` |
 | Series | 399 | 399 | `https://dearbulut.github.io/iptv/playlists/category/series.m3u` |
-| Kids | 317 | 317 | `https://dearbulut.github.io/iptv/playlists/category/kids.m3u` |
+| Kids | 321 | 321 | `https://dearbulut.github.io/iptv/playlists/category/kids.m3u` |
 | Education | 240 | 240 | `https://dearbulut.github.io/iptv/playlists/category/education.m3u` |
-| Documentary | 204 | 204 | `https://dearbulut.github.io/iptv/playlists/category/documentary.m3u` |
-| Culture | 181 | 181 | `https://dearbulut.github.io/iptv/playlists/category/culture.m3u` |
+| Documentary | 206 | 206 | `https://dearbulut.github.io/iptv/playlists/category/documentary.m3u` |
+| Culture | 182 | 182 | `https://dearbulut.github.io/iptv/playlists/category/culture.m3u` |
 | Legislative | 180 | 180 | `https://dearbulut.github.io/iptv/playlists/category/legislative.m3u` |
-| Comedy | 155 | 155 | `https://dearbulut.github.io/iptv/playlists/category/comedy.m3u` |
-| Lifestyle | 122 | 122 | `https://dearbulut.github.io/iptv/playlists/category/lifestyle.m3u` |
+| Comedy | 156 | 156 | `https://dearbulut.github.io/iptv/playlists/category/comedy.m3u` |
+| Lifestyle | 123 | 123 | `https://dearbulut.github.io/iptv/playlists/category/lifestyle.m3u` |
 | Animation | 114 | 114 | `https://dearbulut.github.io/iptv/playlists/category/animation.m3u` |
 | Classic | 80 | 80 | `https://dearbulut.github.io/iptv/playlists/category/classic.m3u` |
 | Shop | 79 | 79 | `https://dearbulut.github.io/iptv/playlists/category/shop.m3u` |
 | Business | 63 | 63 | `https://dearbulut.github.io/iptv/playlists/category/business.m3u` |
 | Outdoor | 61 | 61 | `https://dearbulut.github.io/iptv/playlists/category/outdoor.m3u` |
-| Travel | 57 | 57 | `https://dearbulut.github.io/iptv/playlists/category/travel.m3u` |
+| Travel | 58 | 58 | `https://dearbulut.github.io/iptv/playlists/category/travel.m3u` |
 | Cooking | 47 | 47 | `https://dearbulut.github.io/iptv/playlists/category/cooking.m3u` |
-| Family | 40 | 40 | `https://dearbulut.github.io/iptv/playlists/category/family.m3u` |
+| Family | 41 | 41 | `https://dearbulut.github.io/iptv/playlists/category/family.m3u` |
 | Public | 35 | 35 | `https://dearbulut.github.io/iptv/playlists/category/public.m3u` |
 | Auto | 23 | 23 | `https://dearbulut.github.io/iptv/playlists/category/auto.m3u` |
 | Science | 20 | 20 | `https://dearbulut.github.io/iptv/playlists/category/science.m3u` |
@@ -268,15 +268,15 @@ One playlist per broadcast language.
 
 | Language | Channels | Streams | URL |
 | --- | ---: | ---: | --- |
-| English | 2,612 | 2,612 | `https://dearbulut.github.io/iptv/playlists/language/eng.m3u` |
-| Spanish | 2,236 | 2,236 | `https://dearbulut.github.io/iptv/playlists/language/spa.m3u` |
+| English | 2,619 | 2,619 | `https://dearbulut.github.io/iptv/playlists/language/eng.m3u` |
+| Spanish | 2,239 | 2,239 | `https://dearbulut.github.io/iptv/playlists/language/spa.m3u` |
 | Russian | 537 | 537 | `https://dearbulut.github.io/iptv/playlists/language/rus.m3u` |
 | Portuguese | 477 | 477 | `https://dearbulut.github.io/iptv/playlists/language/por.m3u` |
 | French | 470 | 470 | `https://dearbulut.github.io/iptv/playlists/language/fra.m3u` |
 | Arabic | 353 | 353 | `https://dearbulut.github.io/iptv/playlists/language/ara.m3u` |
 | German | 322 | 322 | `https://dearbulut.github.io/iptv/playlists/language/deu.m3u` |
 | Italian | 317 | 317 | `https://dearbulut.github.io/iptv/playlists/language/ita.m3u` |
-| Hindi | 315 | 315 | `https://dearbulut.github.io/iptv/playlists/language/hin.m3u` |
+| Hindi | 316 | 316 | `https://dearbulut.github.io/iptv/playlists/language/hin.m3u` |
 | Persian | 205 | 205 | `https://dearbulut.github.io/iptv/playlists/language/fas.m3u` |
 | Chinese | 203 | 203 | `https://dearbulut.github.io/iptv/playlists/language/zho.m3u` |
 | Dutch | 189 | 189 | `https://dearbulut.github.io/iptv/playlists/language/nld.m3u` |
@@ -286,10 +286,10 @@ One playlist per broadcast language.
 | Hungarian | 146 | 146 | `https://dearbulut.github.io/iptv/playlists/language/hun.m3u` |
 | Swedish | 139 | 139 | `https://dearbulut.github.io/iptv/playlists/language/swe.m3u` |
 | Indonesian | 135 | 135 | `https://dearbulut.github.io/iptv/playlists/language/ind.m3u` |
+| Romanian | 122 | 122 | `https://dearbulut.github.io/iptv/playlists/language/ron.m3u` |
 | Norwegian | 120 | 120 | `https://dearbulut.github.io/iptv/playlists/language/nor.m3u` |
 | Tamil | 111 | 111 | `https://dearbulut.github.io/iptv/playlists/language/tam.m3u` |
-| Romanian | 110 | 110 | `https://dearbulut.github.io/iptv/playlists/language/ron.m3u` |
-| Vietnamese | 95 | 95 | `https://dearbulut.github.io/iptv/playlists/language/vie.m3u` |
+| Vietnamese | 96 | 96 | `https://dearbulut.github.io/iptv/playlists/language/vie.m3u` |
 | Polish | 93 | 93 | `https://dearbulut.github.io/iptv/playlists/language/pol.m3u` |
 | Serbian | 92 | 92 | `https://dearbulut.github.io/iptv/playlists/language/srp.m3u` |
 | Greek | 88 | 88 | `https://dearbulut.github.io/iptv/playlists/language/ell.m3u` |
@@ -297,15 +297,15 @@ One playlist per broadcast language.
 | Bulgarian | 81 | 81 | `https://dearbulut.github.io/iptv/playlists/language/bul.m3u` |
 | Finnish | 79 | 79 | `https://dearbulut.github.io/iptv/playlists/language/fin.m3u` |
 | Korean | 77 | 77 | `https://dearbulut.github.io/iptv/playlists/language/kor.m3u` |
+| Urdu | 75 | 75 | `https://dearbulut.github.io/iptv/playlists/language/urd.m3u` |
 | Thai | 73 | 73 | `https://dearbulut.github.io/iptv/playlists/language/tha.m3u` |
-| Urdu | 73 | 73 | `https://dearbulut.github.io/iptv/playlists/language/urd.m3u` |
 | Malayalam | 68 | 68 | `https://dearbulut.github.io/iptv/playlists/language/mal.m3u` |
 | Telugu | 66 | 66 | `https://dearbulut.github.io/iptv/playlists/language/tel.m3u` |
 | Czech | 65 | 65 | `https://dearbulut.github.io/iptv/playlists/language/ces.m3u` |
 | Albanian | 55 | 55 | `https://dearbulut.github.io/iptv/playlists/language/sqi.m3u` |
 | Slovak | 54 | 54 | `https://dearbulut.github.io/iptv/playlists/language/slk.m3u` |
 | Catalan | 54 | 54 | `https://dearbulut.github.io/iptv/playlists/language/cat.m3u` |
-| Panjabi | 39 | 39 | `https://dearbulut.github.io/iptv/playlists/language/pan.m3u` |
+| Panjabi | 40 | 40 | `https://dearbulut.github.io/iptv/playlists/language/pan.m3u` |
 | Mongolian | 39 | 39 | `https://dearbulut.github.io/iptv/playlists/language/mon.m3u` |
 | Kazakh | 35 | 35 | `https://dearbulut.github.io/iptv/playlists/language/kaz.m3u` |
 | Kurdish | 34 | 34 | `https://dearbulut.github.io/iptv/playlists/language/kur.m3u` |
@@ -317,15 +317,15 @@ One playlist per broadcast language.
 | Macedonian | 25 | 25 | `https://dearbulut.github.io/iptv/playlists/language/mkd.m3u` |
 | Khmer | 24 | 24 | `https://dearbulut.github.io/iptv/playlists/language/khm.m3u` |
 | Pashto | 22 | 22 | `https://dearbulut.github.io/iptv/playlists/language/pus.m3u` |
-| Slovenian | 22 | 22 | `https://dearbulut.github.io/iptv/playlists/language/slv.m3u` |
 | Swahili | 21 | 21 | `https://dearbulut.github.io/iptv/playlists/language/swa.m3u` |
+| Slovenian | 21 | 21 | `https://dearbulut.github.io/iptv/playlists/language/slv.m3u` |
 | Azerbaijani | 20 | 20 | `https://dearbulut.github.io/iptv/playlists/language/aze.m3u` |
 | Papiamento | 20 | 20 | `https://dearbulut.github.io/iptv/playlists/language/pap.m3u` |
 | Lithuanian | 20 | 20 | `https://dearbulut.github.io/iptv/playlists/language/lit.m3u` |
 | Georgian | 19 | 19 | `https://dearbulut.github.io/iptv/playlists/language/kat.m3u` |
 | Malay | 18 | 18 | `https://dearbulut.github.io/iptv/playlists/language/msa.m3u` |
 | Japanese | 18 | 18 | `https://dearbulut.github.io/iptv/playlists/language/jpn.m3u` |
-| Burmese | 16 | 16 | `https://dearbulut.github.io/iptv/playlists/language/mya.m3u` |
+| Burmese | 17 | 17 | `https://dearbulut.github.io/iptv/playlists/language/mya.m3u` |
 | Latvian | 16 | 16 | `https://dearbulut.github.io/iptv/playlists/language/lav.m3u` |
 | Assamese | 15 | 15 | `https://dearbulut.github.io/iptv/playlists/language/asm.m3u` |
 | Tajik | 15 | 15 | `https://dearbulut.github.io/iptv/playlists/language/tgk.m3u` |
@@ -353,9 +353,9 @@ One playlist per broadcast language.
 | Sinhala | 7 | 7 | `https://dearbulut.github.io/iptv/playlists/language/sin.m3u` |
 | Kinyarwanda | 7 | 7 | `https://dearbulut.github.io/iptv/playlists/language/kin.m3u` |
 | Amharic | 6 | 6 | `https://dearbulut.github.io/iptv/playlists/language/amh.m3u` |
+| Icelandic | 6 | 6 | `https://dearbulut.github.io/iptv/playlists/language/isl.m3u` |
 | Maithili | 6 | 6 | `https://dearbulut.github.io/iptv/playlists/language/mai.m3u` |
 | Wolof | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/language/wol.m3u` |
-| Icelandic | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/language/isl.m3u` |
 | Afrikaans | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/language/afr.m3u` |
 | Javanese | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/language/jav.m3u` |
 | jap | 5 | 5 | `https://dearbulut.github.io/iptv/playlists/language/jap.m3u` |
@@ -376,6 +376,7 @@ One playlist per broadcast language.
 | Hmong | 2 | 2 | `https://dearbulut.github.io/iptv/playlists/language/hmn.m3u` |
 | Cebuano | 2 | 2 | `https://dearbulut.github.io/iptv/playlists/language/ceb.m3u` |
 | Assyrian Neo-Aramaic | 2 | 2 | `https://dearbulut.github.io/iptv/playlists/language/aii.m3u` |
+| Yoruba | 2 | 2 | `https://dearbulut.github.io/iptv/playlists/language/yor.m3u` |
 | Welsh | 2 | 2 | `https://dearbulut.github.io/iptv/playlists/language/cym.m3u` |
 | Fulah | 2 | 2 | `https://dearbulut.github.io/iptv/playlists/language/ful.m3u` |
 | Lahnda | 2 | 2 | `https://dearbulut.github.io/iptv/playlists/language/lah.m3u` |
@@ -404,7 +405,6 @@ One playlist per broadcast language.
 | Tatar | 1 | 1 | `https://dearbulut.github.io/iptv/playlists/language/tat.m3u` |
 | Chhattisgarhi | 1 | 1 | `https://dearbulut.github.io/iptv/playlists/language/hne.m3u` |
 | Mesopotamian Arabic | 1 | 1 | `https://dearbulut.github.io/iptv/playlists/language/acm.m3u` |
-| Yoruba | 1 | 1 | `https://dearbulut.github.io/iptv/playlists/language/yor.m3u` |
 | Sindhi | 1 | 1 | `https://dearbulut.github.io/iptv/playlists/language/snd.m3u` |
 | Santali | 1 | 1 | `https://dearbulut.github.io/iptv/playlists/language/sat.m3u` |
 | Isekiri | 1 | 1 | `https://dearbulut.github.io/iptv/playlists/language/its.m3u` |
