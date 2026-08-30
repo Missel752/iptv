@@ -1,7 +1,7 @@
 # Playlists
 
 > Generated automatically — do not edit by hand.
-> Last updated **2026-08-30 12:21 UTC**.
+> Last updated **2026-08-30 18:22 UTC**.
 
 10,006 channels with a working stream, out of 39,440 indexed. 0 streams responded on the last scan.
 
