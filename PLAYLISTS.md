@@ -1,9 +1,9 @@
 # Playlists
 
 > Generated automatically — do not edit by hand.
-> Last updated **2026-09-06 00:39 UTC**.
+> Last updated **2026-09-06 06:31 UTC**.
 
-9,885 channels with a working stream, out of 29,868 indexed. 0 streams responded on the last scan.
+9,885 channels with a working stream, out of 29,877 indexed. 0 streams responded on the last scan.
 
 ## Main playlists
 
@@ -270,7 +270,7 @@ One playlist per broadcast language.
 | --- | ---: | ---: | --- |
 | English | 2,499 | 2,499 | `https://Missel752.github.io/iptv/playlists/language/eng.m3u` |
 | Spanish | 2,272 | 2,272 | `https://Missel752.github.io/iptv/playlists/language/spa.m3u` |
-| Russian | 562 | 562 | `https://Missel752.github.io/iptv/playlists/language/rus.m3u` |
+| Russian | 563 | 563 | `https://Missel752.github.io/iptv/playlists/language/rus.m3u` |
 | Portuguese | 477 | 477 | `https://Missel752.github.io/iptv/playlists/language/por.m3u` |
 | French | 459 | 459 | `https://Missel752.github.io/iptv/playlists/language/fra.m3u` |
 | Arabic | 354 | 354 | `https://Missel752.github.io/iptv/playlists/language/ara.m3u` |
