@@ -1,9 +1,9 @@
 # Playlists
 
 > Generated automatically — do not edit by hand.
-> Last updated **2026-09-07 18:31 UTC**.
+> Last updated **2026-09-08 00:38 UTC**.
 
-9,902 channels with a working stream, out of 29,899 indexed. 0 streams responded on the last scan.
+9,918 channels with a working stream, out of 29,899 indexed. 0 streams responded on the last scan.
 
 ## Main playlists
 
@@ -38,33 +38,33 @@ One playlist per country, best stream per channel.
 
 | Country | Channels | Streams | URL |
 | --- | ---: | ---: | --- |
-| 🇺🇸 United States | 1,572 | 1,572 | `https://Missel752.github.io/iptv/playlists/country/us.m3u` |
-| 🇮🇳 India | 694 | 694 | `https://Missel752.github.io/iptv/playlists/country/in.m3u` |
+| 🇺🇸 United States | 1,573 | 1,573 | `https://Missel752.github.io/iptv/playlists/country/us.m3u` |
+| 🇮🇳 India | 695 | 695 | `https://Missel752.github.io/iptv/playlists/country/in.m3u` |
 | 🇷🇺 Russia | 442 | 442 | `https://Missel752.github.io/iptv/playlists/country/ru.m3u` |
 | 🇩🇪 Germany | 415 | 415 | `https://Missel752.github.io/iptv/playlists/country/de.m3u` |
-| 🇧🇷 Brazil | 276 | 276 | `https://Missel752.github.io/iptv/playlists/country/br.m3u` |
+| 🇧🇷 Brazil | 277 | 277 | `https://Missel752.github.io/iptv/playlists/country/br.m3u` |
 | 🇮🇹 Italy | 251 | 251 | `https://Missel752.github.io/iptv/playlists/country/it.m3u` |
 | 🇪🇸 Spain | 247 | 247 | `https://Missel752.github.io/iptv/playlists/country/es.m3u` |
 | 🇩🇴 Dominican Republic | 246 | 246 | `https://Missel752.github.io/iptv/playlists/country/do.m3u` |
 | 🇨🇱 Chile | 235 | 235 | `https://Missel752.github.io/iptv/playlists/country/cl.m3u` |
 | 🇸🇪 Sweden | 202 | 202 | `https://Missel752.github.io/iptv/playlists/country/se.m3u` |
-| 🇹🇷 Turkiye | 195 | 195 | `https://Missel752.github.io/iptv/playlists/country/tr.m3u` |
-| 🇬🇧 United Kingdom | 191 | 191 | `https://Missel752.github.io/iptv/playlists/country/uk.m3u` |
+| 🇹🇷 Turkiye | 196 | 196 | `https://Missel752.github.io/iptv/playlists/country/tr.m3u` |
+| 🇬🇧 United Kingdom | 190 | 190 | `https://Missel752.github.io/iptv/playlists/country/uk.m3u` |
 | 🇺🇦 Ukraine | 179 | 179 | `https://Missel752.github.io/iptv/playlists/country/ua.m3u` |
 | 🇫🇷 France | 177 | 177 | `https://Missel752.github.io/iptv/playlists/country/fr.m3u` |
 | 🇵🇪 Peru | 171 | 171 | `https://Missel752.github.io/iptv/playlists/country/pe.m3u` |
 | 🇳🇱 Netherlands | 170 | 170 | `https://Missel752.github.io/iptv/playlists/country/nl.m3u` |
 | 🇦🇷 Argentina | 163 | 163 | `https://Missel752.github.io/iptv/playlists/country/ar.m3u` |
 | 🇲🇽 Mexico | 157 | 157 | `https://Missel752.github.io/iptv/playlists/country/mx.m3u` |
-| 🇨🇳 China | 148 | 148 | `https://Missel752.github.io/iptv/playlists/country/cn.m3u` |
+| 🇨🇳 China | 149 | 149 | `https://Missel752.github.io/iptv/playlists/country/cn.m3u` |
 | 🇭🇺 Hungary | 132 | 132 | `https://Missel752.github.io/iptv/playlists/country/hu.m3u` |
 | 🇮🇩 Indonesia | 129 | 129 | `https://Missel752.github.io/iptv/playlists/country/id.m3u` |
 | 🇨🇦 Canada | 128 | 128 | `https://Missel752.github.io/iptv/playlists/country/ca.m3u` |
 | 🇮🇷 Iran | 120 | 120 | `https://Missel752.github.io/iptv/playlists/country/ir.m3u` |
 | 🇨🇴 Colombia | 107 | 107 | `https://Missel752.github.io/iptv/playlists/country/co.m3u` |
-| 🇷🇴 Romania | 96 | 96 | `https://Missel752.github.io/iptv/playlists/country/ro.m3u` |
+| 🇷🇴 Romania | 100 | 100 | `https://Missel752.github.io/iptv/playlists/country/ro.m3u` |
 | 🇵🇱 Poland | 93 | 93 | `https://Missel752.github.io/iptv/playlists/country/pl.m3u` |
-| 🇵🇰 Pakistan | 86 | 86 | `https://Missel752.github.io/iptv/playlists/country/pk.m3u` |
+| 🇵🇰 Pakistan | 90 | 90 | `https://Missel752.github.io/iptv/playlists/country/pk.m3u` |
 | 🇻🇳 Vietnam | 81 | 81 | `https://Missel752.github.io/iptv/playlists/country/vn.m3u` |
 | 🇪🇨 Ecuador | 80 | 80 | `https://Missel752.github.io/iptv/playlists/country/ec.m3u` |
 | 🇭🇳 Honduras | 76 | 76 | `https://Missel752.github.io/iptv/playlists/country/hn.m3u` |
@@ -113,6 +113,7 @@ One playlist per country, best stream per channel.
 | 🇲🇾 Malaysia | 21 | 21 | `https://Missel752.github.io/iptv/playlists/country/my.m3u` |
 | 🇬🇪 Georgia | 20 | 20 | `https://Missel752.github.io/iptv/playlists/country/ge.m3u` |
 | 🇸🇬 Singapore | 20 | 20 | `https://Missel752.github.io/iptv/playlists/country/sg.m3u` |
+| 🇭🇰 Hong Kong | 20 | 20 | `https://Missel752.github.io/iptv/playlists/country/hk.m3u` |
 | 🇵🇸 Palestine | 19 | 19 | `https://Missel752.github.io/iptv/playlists/country/ps.m3u` |
 | 🇪🇪 Estonia | 19 | 19 | `https://Missel752.github.io/iptv/playlists/country/ee.m3u` |
 | 🇳🇮 Nicaragua | 19 | 19 | `https://Missel752.github.io/iptv/playlists/country/ni.m3u` |
@@ -125,7 +126,6 @@ One playlist per country, best stream per channel.
 | 🇧🇿 Belize | 17 | 17 | `https://Missel752.github.io/iptv/playlists/country/bz.m3u` |
 | 🇨🇩 Democratic Republic of the Congo | 16 | 16 | `https://Missel752.github.io/iptv/playlists/country/cd.m3u` |
 | 🇱🇹 Lithuania | 16 | 16 | `https://Missel752.github.io/iptv/playlists/country/lt.m3u` |
-| 🇭🇰 Hong Kong | 16 | 16 | `https://Missel752.github.io/iptv/playlists/country/hk.m3u` |
 | 🇮🇪 Ireland | 16 | 16 | `https://Missel752.github.io/iptv/playlists/country/ie.m3u` |
 | 🇸🇳 Senegal | 15 | 15 | `https://Missel752.github.io/iptv/playlists/country/sn.m3u` |
 | 🇨🇾 Cyprus | 15 | 15 | `https://Missel752.github.io/iptv/playlists/country/cy.m3u` |
@@ -227,22 +227,22 @@ One playlist per category — news, sports, movies, music and so on.
 
 | Category | Channels | Streams | URL |
 | --- | ---: | ---: | --- |
-| General | 2,453 | 2,453 | `https://Missel752.github.io/iptv/playlists/category/general.m3u` |
-| News | 918 | 918 | `https://Missel752.github.io/iptv/playlists/category/news.m3u` |
-| Entertainment | 766 | 766 | `https://Missel752.github.io/iptv/playlists/category/entertainment.m3u` |
+| General | 2,457 | 2,457 | `https://Missel752.github.io/iptv/playlists/category/general.m3u` |
+| News | 925 | 925 | `https://Missel752.github.io/iptv/playlists/category/news.m3u` |
+| Entertainment | 768 | 768 | `https://Missel752.github.io/iptv/playlists/category/entertainment.m3u` |
 | Religious | 728 | 728 | `https://Missel752.github.io/iptv/playlists/category/religious.m3u` |
 | Music | 707 | 707 | `https://Missel752.github.io/iptv/playlists/category/music.m3u` |
-| Movies | 598 | 598 | `https://Missel752.github.io/iptv/playlists/category/movies.m3u` |
-| Sports | 420 | 420 | `https://Missel752.github.io/iptv/playlists/category/sports.m3u` |
+| Movies | 599 | 599 | `https://Missel752.github.io/iptv/playlists/category/movies.m3u` |
+| Sports | 419 | 419 | `https://Missel752.github.io/iptv/playlists/category/sports.m3u` |
 | Series | 409 | 409 | `https://Missel752.github.io/iptv/playlists/category/series.m3u` |
-| Kids | 339 | 339 | `https://Missel752.github.io/iptv/playlists/category/kids.m3u` |
+| Kids | 341 | 341 | `https://Missel752.github.io/iptv/playlists/category/kids.m3u` |
 | Education | 231 | 231 | `https://Missel752.github.io/iptv/playlists/category/education.m3u` |
 | Documentary | 211 | 211 | `https://Missel752.github.io/iptv/playlists/category/documentary.m3u` |
 | Culture | 183 | 183 | `https://Missel752.github.io/iptv/playlists/category/culture.m3u` |
 | Legislative | 179 | 179 | `https://Missel752.github.io/iptv/playlists/category/legislative.m3u` |
 | Comedy | 160 | 160 | `https://Missel752.github.io/iptv/playlists/category/comedy.m3u` |
 | Lifestyle | 122 | 122 | `https://Missel752.github.io/iptv/playlists/category/lifestyle.m3u` |
-| Animation | 117 | 117 | `https://Missel752.github.io/iptv/playlists/category/animation.m3u` |
+| Animation | 118 | 118 | `https://Missel752.github.io/iptv/playlists/category/animation.m3u` |
 | Classic | 83 | 83 | `https://Missel752.github.io/iptv/playlists/category/classic.m3u` |
 | Shop | 80 | 80 | `https://Missel752.github.io/iptv/playlists/category/shop.m3u` |
 | Business | 63 | 63 | `https://Missel752.github.io/iptv/playlists/category/business.m3u` |
@@ -268,7 +268,7 @@ One playlist per broadcast language.
 
 | Language | Channels | Streams | URL |
 | --- | ---: | ---: | --- |
-| English | 2,499 | 2,499 | `https://Missel752.github.io/iptv/playlists/language/eng.m3u` |
+| English | 2,501 | 2,501 | `https://Missel752.github.io/iptv/playlists/language/eng.m3u` |
 | Spanish | 2,275 | 2,275 | `https://Missel752.github.io/iptv/playlists/language/spa.m3u` |
 | Russian | 572 | 572 | `https://Missel752.github.io/iptv/playlists/language/rus.m3u` |
 | Portuguese | 477 | 477 | `https://Missel752.github.io/iptv/playlists/language/por.m3u` |
@@ -277,18 +277,18 @@ One playlist per broadcast language.
 | Hindi | 328 | 328 | `https://Missel752.github.io/iptv/playlists/language/hin.m3u` |
 | German | 321 | 321 | `https://Missel752.github.io/iptv/playlists/language/deu.m3u` |
 | Italian | 320 | 320 | `https://Missel752.github.io/iptv/playlists/language/ita.m3u` |
-| Chinese | 208 | 208 | `https://Missel752.github.io/iptv/playlists/language/zho.m3u` |
+| Chinese | 211 | 211 | `https://Missel752.github.io/iptv/playlists/language/zho.m3u` |
 | Persian | 206 | 206 | `https://Missel752.github.io/iptv/playlists/language/fas.m3u` |
 | Dutch | 191 | 191 | `https://Missel752.github.io/iptv/playlists/language/nld.m3u` |
 | Ukrainian | 173 | 173 | `https://Missel752.github.io/iptv/playlists/language/ukr.m3u` |
-| Turkish | 172 | 172 | `https://Missel752.github.io/iptv/playlists/language/tur.m3u` |
+| Turkish | 173 | 173 | `https://Missel752.github.io/iptv/playlists/language/tur.m3u` |
 | Danish | 157 | 157 | `https://Missel752.github.io/iptv/playlists/language/dan.m3u` |
-| Hungarian | 145 | 145 | `https://Missel752.github.io/iptv/playlists/language/hun.m3u` |
+| Hungarian | 146 | 146 | `https://Missel752.github.io/iptv/playlists/language/hun.m3u` |
 | Swedish | 139 | 139 | `https://Missel752.github.io/iptv/playlists/language/swe.m3u` |
 | Indonesian | 134 | 134 | `https://Missel752.github.io/iptv/playlists/language/ind.m3u` |
-| Romanian | 129 | 129 | `https://Missel752.github.io/iptv/playlists/language/ron.m3u` |
+| Romanian | 133 | 133 | `https://Missel752.github.io/iptv/playlists/language/ron.m3u` |
 | Norwegian | 120 | 120 | `https://Missel752.github.io/iptv/playlists/language/nor.m3u` |
-| Tamil | 117 | 117 | `https://Missel752.github.io/iptv/playlists/language/tam.m3u` |
+| Tamil | 118 | 118 | `https://Missel752.github.io/iptv/playlists/language/tam.m3u` |
 | Vietnamese | 99 | 99 | `https://Missel752.github.io/iptv/playlists/language/vie.m3u` |
 | Serbian | 92 | 92 | `https://Missel752.github.io/iptv/playlists/language/srp.m3u` |
 | Polish | 90 | 90 | `https://Missel752.github.io/iptv/playlists/language/pol.m3u` |
@@ -296,8 +296,8 @@ One playlist per broadcast language.
 | Bengali | 89 | 89 | `https://Missel752.github.io/iptv/playlists/language/ben.m3u` |
 | Korean | 82 | 82 | `https://Missel752.github.io/iptv/playlists/language/kor.m3u` |
 | Bulgarian | 81 | 81 | `https://Missel752.github.io/iptv/playlists/language/bul.m3u` |
+| Urdu | 81 | 81 | `https://Missel752.github.io/iptv/playlists/language/urd.m3u` |
 | Finnish | 79 | 79 | `https://Missel752.github.io/iptv/playlists/language/fin.m3u` |
-| Urdu | 77 | 77 | `https://Missel752.github.io/iptv/playlists/language/urd.m3u` |
 | Thai | 74 | 74 | `https://Missel752.github.io/iptv/playlists/language/tha.m3u` |
 | Malayalam | 70 | 70 | `https://Missel752.github.io/iptv/playlists/language/mal.m3u` |
 | Telugu | 69 | 69 | `https://Missel752.github.io/iptv/playlists/language/tel.m3u` |
@@ -341,6 +341,7 @@ One playlist per broadcast language.
 | Belarusian | 11 | 11 | `https://Missel752.github.io/iptv/playlists/language/bel.m3u` |
 | Tagalog | 11 | 11 | `https://Missel752.github.io/iptv/playlists/language/tgl.m3u` |
 | Oriya (macrolanguage) | 11 | 11 | `https://Missel752.github.io/iptv/playlists/language/ori.m3u` |
+| Yue Chinese | 10 | 10 | `https://Missel752.github.io/iptv/playlists/language/yue.m3u` |
 | Somali | 10 | 10 | `https://Missel752.github.io/iptv/playlists/language/som.m3u` |
 | Estonian | 10 | 10 | `https://Missel752.github.io/iptv/playlists/language/est.m3u` |
 | Turkmen | 9 | 9 | `https://Missel752.github.io/iptv/playlists/language/tuk.m3u` |
@@ -350,7 +351,6 @@ One playlist per broadcast language.
 | Sinhala | 8 | 8 | `https://Missel752.github.io/iptv/playlists/language/sin.m3u` |
 | Ganda | 8 | 8 | `https://Missel752.github.io/iptv/playlists/language/lug.m3u` |
 | Dhivehi | 8 | 8 | `https://Missel752.github.io/iptv/playlists/language/div.m3u` |
-| Yue Chinese | 7 | 7 | `https://Missel752.github.io/iptv/playlists/language/yue.m3u` |
 | Kinyarwanda | 7 | 7 | `https://Missel752.github.io/iptv/playlists/language/kin.m3u` |
 | Maithili | 7 | 7 | `https://Missel752.github.io/iptv/playlists/language/mai.m3u` |
 | Amharic | 6 | 6 | `https://Missel752.github.io/iptv/playlists/language/amh.m3u` |
