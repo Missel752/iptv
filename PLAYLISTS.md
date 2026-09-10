@@ -1,9 +1,9 @@
 # Playlists
 
 > Generated automatically — do not edit by hand.
-> Last updated **2026-09-10 00:34 UTC**.
+> Last updated **2026-09-10 06:34 UTC**.
 
-9,920 channels with a working stream, out of 29,920 indexed. 0 streams responded on the last scan.
+9,920 channels with a working stream, out of 29,926 indexed. 0 streams responded on the last scan.
 
 ## Main playlists
 
@@ -229,9 +229,9 @@ One playlist per category — news, sports, movies, music and so on.
 | --- | ---: | ---: | --- |
 | General | 2,461 | 2,461 | `https://Missel752.github.io/iptv/playlists/category/general.m3u` |
 | News | 924 | 924 | `https://Missel752.github.io/iptv/playlists/category/news.m3u` |
-| Entertainment | 768 | 768 | `https://Missel752.github.io/iptv/playlists/category/entertainment.m3u` |
+| Entertainment | 769 | 769 | `https://Missel752.github.io/iptv/playlists/category/entertainment.m3u` |
 | Religious | 728 | 728 | `https://Missel752.github.io/iptv/playlists/category/religious.m3u` |
-| Music | 707 | 707 | `https://Missel752.github.io/iptv/playlists/category/music.m3u` |
+| Music | 706 | 706 | `https://Missel752.github.io/iptv/playlists/category/music.m3u` |
 | Movies | 595 | 595 | `https://Missel752.github.io/iptv/playlists/category/movies.m3u` |
 | Sports | 416 | 416 | `https://Missel752.github.io/iptv/playlists/category/sports.m3u` |
 | Series | 408 | 408 | `https://Missel752.github.io/iptv/playlists/category/series.m3u` |
